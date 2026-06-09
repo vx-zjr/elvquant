@@ -2,6 +2,10 @@
 
 ## 2026-06-09
 
+- Added non-broker readiness controls: kill switch, order amount limits, local
+  confirmation records, and readiness controls.
+- Updated readiness report to ready after blocker remediation, while keeping
+  broker integration out of scope.
 - Added live-readiness review generation and a tracked blocked readiness report.
 - Explicitly blocked live trading until readiness gaps are remediated.
 - Added a deterministic ML-style research signal layer with chronological split,

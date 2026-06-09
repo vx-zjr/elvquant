@@ -9,9 +9,9 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 11 is complete once the live-readiness review is generated. Current status
-is blocked: live trading is not allowed. The next task is to remediate readiness
-blockers without adding broker connectivity or live order submission.
+Readiness blockers have been remediated with non-broker controls. The next task
+is Phase 12: implement a manual-confirmation order workflow that defaults to
+dry-run and still has no broker integration.
 
 ## Explicit Non-Goals
 

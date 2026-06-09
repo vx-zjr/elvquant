@@ -42,3 +42,9 @@ Before completing any task, verify:
 - Paper trading logs orders locally with `broker_submission: disabled`.
 - Paper daily reports are generated.
 - Paper failures are logged explicitly.
+
+## Phase 11 Remediation Review
+
+- Kill switch, order amount limits, alert logging, traceability, recovery,
+  human confirmation records, and paper observation controls exist without
+  broker integration.

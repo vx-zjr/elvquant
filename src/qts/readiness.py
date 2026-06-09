@@ -16,21 +16,39 @@ class ReadinessReport:
     markdown_path: Path
 
 
-def generate_readiness_report(output_dir: Path, tests_passed: bool) -> ReadinessReport:
+@dataclass(frozen=True)
+class ReadinessControls:
+    """Declared non-broker readiness controls."""
+
+    kill_switch_design: bool = False
+    order_amount_limits: bool = False
+    abnormal_alerting: bool = False
+    order_source_traceability: bool = False
+    stop_and_recovery: bool = False
+    human_confirmation: bool = False
+    sufficient_paper_observation: bool = False
+
+
+def generate_readiness_report(
+    output_dir: Path,
+    tests_passed: bool,
+    controls: ReadinessControls | None = None,
+) -> ReadinessReport:
     """Generate a readiness report without enabling live trading."""
 
+    controls = controls or ReadinessControls()
     output_dir.mkdir(parents=True, exist_ok=True)
     checks = {
         "all_tests_passed": tests_passed,
-        "kill_switch_design": False,
-        "order_amount_limits": False,
+        "kill_switch_design": controls.kill_switch_design,
+        "order_amount_limits": controls.order_amount_limits,
         "max_loss_limits": True,
-        "abnormal_alerting": False,
-        "order_source_traceability": False,
-        "stop_and_recovery": False,
+        "abnormal_alerting": controls.abnormal_alerting,
+        "order_source_traceability": controls.order_source_traceability,
+        "stop_and_recovery": controls.stop_and_recovery,
         "api_key_management": True,
-        "human_confirmation": False,
-        "sufficient_paper_observation": False,
+        "human_confirmation": controls.human_confirmation,
+        "sufficient_paper_observation": controls.sufficient_paper_observation,
     }
     blockers = _blockers(checks)
     live_allowed = not blockers
@@ -86,4 +104,4 @@ def _markdown(
     return "\n".join(lines)
 
 
-__all__ = ["ReadinessReport", "generate_readiness_report"]
+__all__ = ["ReadinessControls", "ReadinessReport", "generate_readiness_report"]

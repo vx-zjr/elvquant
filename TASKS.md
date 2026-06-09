@@ -463,7 +463,7 @@ Agent instructions:
 
 ## Task ID: QTS-012
 
-Status: Pending
+Status: Completed
 Phase: 11 remediation
 Title: Remediate live-readiness blockers without broker integration
 
@@ -503,3 +503,43 @@ Agent instructions:
 - Write failing remediation tests before implementation.
 - Keep broker submission disabled.
 - Do not implement real live order submission.
+
+## Task ID: QTS-013
+
+Status: Pending
+Phase: 12
+Title: Add manual-confirmation dry-run order workflow
+
+Scope:
+- Generate order recommendations.
+- Run risk checks before confirmation.
+- Require human confirmation records before submit.
+- Keep default mode as dry-run.
+- Add kill switch enforcement.
+- Real submission must remain disabled unless explicitly enabled in future work.
+- Do not store plaintext secrets.
+- Do not add broker API clients.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `RUNBOOK.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Dry-run tests pass.
+- Risk rejection prevents submit.
+- Kill switch prevents submit.
+- Missing human confirmation prevents submit.
+- Confirmed dry-run records source strategy, signal, target, risk result,
+  confirmer, and confirmation time.
+- `RUNBOOK.md` documents emergency stop.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing manual-confirmation tests before implementation.
+- Keep broker submission disabled by default.
+- Do not add real broker clients or secrets.

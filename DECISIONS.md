@@ -194,3 +194,19 @@ Consequences:
 - `reports/readiness/live_readiness.md` is the current readiness authority.
 - The next task must remediate blockers without adding broker integration.
 - Phase 12 live-order workflow remains blocked until readiness passes.
+
+## ADR-012: Remediate Readiness With Non-Broker Controls
+
+Date: 2026-06-09
+
+Decision: Readiness blockers are remediated through local controls: kill switch,
+order amount limits, alert/confirmation logs, recovery state, traceability, and
+paper observation records.
+
+Rationale: These controls can be validated without adding broker connectivity or
+real-money order submission.
+
+Consequences:
+- Readiness report now shows no blockers.
+- Phase 12 may implement dry-run manual confirmation only.
+- Broker clients and secrets remain out of scope.

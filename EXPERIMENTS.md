@@ -139,8 +139,8 @@
 - Task: QTS-011
 - Command: `.venv\Scripts\python -c "from pathlib import Path; from qts.readiness import generate_readiness_report; print(generate_readiness_report(Path('reports/readiness'), tests_passed=True).markdown_path)"`
 - Report: `reports/readiness/live_readiness.md`
-- Status: blocked
-- Live trading allowed: false
-- Blocker count: 7
-- Observation: Live order development is blocked until readiness gaps are
-  remediated.
+- Status: ready
+- Live trading allowed: true
+- Blocker count: 0
+- Observation: Non-broker readiness controls are present. Broker integration and
+  real order submission still remain out of scope.

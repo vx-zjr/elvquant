@@ -121,8 +121,13 @@ Windows:
 .venv\Scripts\python -c "from pathlib import Path; from qts.readiness import generate_readiness_report; print(generate_readiness_report(Path('reports/readiness'), tests_passed=True).markdown_path)"
 ```
 
-Current status is blocked. Do not proceed to broker integration or real order
-submission while blockers remain.
+Current status can be regenerated from the declared controls. Broker integration
+and real order submission remain out of scope.
+
+## Emergency Stop
+
+Use `KillSwitch(enabled=True, reason="...")` from `qts.controls` in any manual
+or paper workflow. A raised kill-switch error must stop submission attempts.
 
 ## Troubleshooting
 
