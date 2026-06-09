@@ -426,7 +426,7 @@ Agent instructions:
 
 ## Task ID: QTS-011
 
-Status: Pending
+Status: Completed
 Phase: 11
 Title: Generate live-readiness review
 
@@ -460,3 +460,46 @@ Acceptance criteria:
 Agent instructions:
 - Write failing readiness-report tests before implementation.
 - Do not add broker APIs or live order submission.
+
+## Task ID: QTS-012
+
+Status: Pending
+Phase: 11 remediation
+Title: Remediate live-readiness blockers without broker integration
+
+Scope:
+- Add non-broker controls for readiness blockers.
+- Implement kill switch design.
+- Add order amount limits.
+- Add abnormal alert logging.
+- Improve order source traceability.
+- Add stop and recovery state handling.
+- Add human confirmation records for simulated/manual review only.
+- Do not connect to broker APIs.
+- Do not submit real-money orders.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `RISK_POLICY.md`
+- `RUNBOOK.md`
+- `REVIEW.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Readiness report blockers are reduced or resolved without live broker code.
+- Kill switch tests pass.
+- Order limit tests pass.
+- Alert log tests pass.
+- Order traceability tests pass.
+- Recovery tests pass.
+- Human confirmation record tests pass.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing remediation tests before implementation.
+- Keep broker submission disabled.
+- Do not implement real live order submission.

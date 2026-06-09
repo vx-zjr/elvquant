@@ -9,10 +9,9 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 10 is complete once the ML-style research signal layer obeys the
-`SignalModel` boundary, uses chronological splits, checks feature visibility, and
-compares against the rule momentum strategy. The next task is Phase 11: perform
-a live-readiness review and list blockers before any real trading path.
+Phase 11 is complete once the live-readiness review is generated. Current status
+is blocked: live trading is not allowed. The next task is to remediate readiness
+blockers without adding broker connectivity or live order submission.
 
 ## Explicit Non-Goals
 

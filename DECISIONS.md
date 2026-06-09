@@ -178,3 +178,19 @@ Consequences:
 - Chronological split and feature-visibility tests are mandatory.
 - ML comparison reports are research observations, not trading advice.
 - The system remains unable to submit live orders.
+
+## ADR-011: Block Live Trading Until Readiness Gaps Are Remediated
+
+Date: 2026-06-09
+
+Decision: The readiness review marks live trading as blocked and forbids moving
+to live order submission work.
+
+Rationale: Required controls such as kill switch, order amount limits, abnormal
+alerting, order traceability, recovery, human confirmation, and sufficient paper
+observation are incomplete.
+
+Consequences:
+- `reports/readiness/live_readiness.md` is the current readiness authority.
+- The next task must remediate blockers without adding broker integration.
+- Phase 12 live-order workflow remains blocked until readiness passes.

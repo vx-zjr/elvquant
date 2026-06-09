@@ -133,3 +133,14 @@
   - ml_minus_momentum_return: 0.007605
 - Observation: The ML-style model is deterministic and slightly higher on this
   tiny sample. This is not sufficient evidence for live trading.
+
+## 2026-06-09 Live Readiness Review
+
+- Task: QTS-011
+- Command: `.venv\Scripts\python -c "from pathlib import Path; from qts.readiness import generate_readiness_report; print(generate_readiness_report(Path('reports/readiness'), tests_passed=True).markdown_path)"`
+- Report: `reports/readiness/live_readiness.md`
+- Status: blocked
+- Live trading allowed: false
+- Blocker count: 7
+- Observation: Live order development is blocked until readiness gaps are
+  remediated.

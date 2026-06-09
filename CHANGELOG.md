@@ -2,6 +2,8 @@
 
 ## 2026-06-09
 
+- Added live-readiness review generation and a tracked blocked readiness report.
+- Explicitly blocked live trading until readiness gaps are remediated.
 - Added a deterministic ML-style research signal layer with chronological split,
   feature-visibility checks, reproducible training, and ML-vs-momentum
   comparison reporting.

@@ -113,6 +113,17 @@ Windows:
 This is a research comparison only and does not alter risk, execution,
 accounting, or live trading behavior.
 
+## Live Readiness Review
+
+Windows:
+
+```powershell
+.venv\Scripts\python -c "from pathlib import Path; from qts.readiness import generate_readiness_report; print(generate_readiness_report(Path('reports/readiness'), tests_passed=True).markdown_path)"
+```
+
+Current status is blocked. Do not proceed to broker integration or real order
+submission while blockers remain.
+
 ## Troubleshooting
 
 - If `python` is not available on Windows, try `py`.
