@@ -32,3 +32,20 @@ Consequences:
 - Later implementations must conform to the Protocol method signatures.
 - Interface changes must update `CONTRACTS.md`, tests, and this decision log.
 - Runtime behavior remains absent until the Phase 2 task.
+
+## ADR-002: Use a Deterministic Synthetic Loop Before Real Data
+
+Date: 2026-06-09
+
+Decision: Phase 2 implements a deterministic synthetic end-to-end loop with
+equal-weight signals, basic no-short/no-overallocation risk checks, next-day
+synthetic execution, simple accounting, and a compact text report.
+
+Rationale: A small fake-data loop proves the pipeline can run without
+introducing real market data, broker dependencies, ML, or production strategy
+logic.
+
+Consequences:
+- Results are engineering smoke tests, not trading evidence.
+- `SyntheticDataSource` is the only data source allowed until the Phase 4 task.
+- Phase 3 must add honesty probes before any real historical data is introduced.

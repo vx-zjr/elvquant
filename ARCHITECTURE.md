@@ -1,9 +1,10 @@
 # Architecture
 
-## Phase 1 Boundary
+## Phase 2 Boundary
 
-The repository contains scaffolding, governance documents, and typed interface
-contracts. There are no runtime trading implementations yet.
+The repository contains scaffolding, governance documents, typed interface
+contracts, and the thinnest runnable synthetic research loop. Runtime behavior is
+limited to deterministic synthetic data and simple equal-weight research logic.
 
 ## Planned Modules
 
@@ -28,3 +29,19 @@ contracts. There are no runtime trading implementations yet.
 ## Contract Location
 
 Core Protocols and dataclass payloads live in `src/qts/contracts.py`.
+
+## Phase 2 Implementation Location
+
+Minimal synthetic implementations live in `src/qts/simple.py`:
+
+- `SyntheticDataSource`
+- `EqualWeightSignal`
+- `SimplePortfolioConstructor`
+- `BasicRiskManager`
+- `SimpleExecutionSimulator`
+- `SimpleAccountingLedger`
+- `SimpleBacktester`
+- `SimpleReporter`
+
+`run.py` runs the deterministic synthetic demo. It does not access real data,
+broker APIs, account state, or secrets.

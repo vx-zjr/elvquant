@@ -68,7 +68,7 @@ Agent instructions:
 
 ## Task ID: QTS-002
 
-Status: Pending
+Status: Completed
 Phase: 2
 Title: Implement thinnest synthetic end-to-end loop
 
@@ -104,3 +104,48 @@ Agent instructions:
 - Write the end-to-end test before implementation.
 - Keep implementations behind the contracts.
 - Update docs before final response.
+
+## Task ID: QTS-003
+
+Status: Pending
+Phase: 3
+Title: Add honesty probe tests
+
+Scope:
+- Add tests that catch self-deception and low-level accounting/risk mistakes.
+- Do not add new strategies.
+- Do not use real market data.
+- Do not add ML.
+
+Required probes:
+- Zero-signal or equal-weight behavior does not get rich from nowhere after
+  costs.
+- A cheating future-price strategy must be caught by tests.
+- Cash plus position market value equals total equity.
+- Costs cannot be negative.
+- Positions do not change when there are no trades.
+- Risk rejects targets above the maximum position.
+- Backtest results include `run_id` and config summary.
+
+Files likely touched:
+- `tests/`
+- `src/qts/`
+- `CONTRACTS.md`
+- `DECISIONS.md`
+- `REVIEW.md`
+- `TASKS.md`
+- `CHANGELOG.md`
+
+Acceptance criteria:
+- All honesty probes pass.
+- `REVIEW.md` requires honesty probes before completion.
+- `TASKS.md` next task allows real historical data only after probes pass.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing probe tests before changing implementation.
+- If interfaces cannot express a rule, update `CONTRACTS.md` and
+  `DECISIONS.md` before code changes.
+- Keep the scope limited to probes and minimum fixes.

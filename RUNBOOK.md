@@ -29,6 +29,21 @@ Windows:
 .venv\Scripts\python -m mypy
 ```
 
+## Synthetic Demo
+
+Windows:
+
+```powershell
+.venv\Scripts\python run.py
+```
+
+Expected output includes:
+
+- `net_value`
+- `total_return`
+- `max_drawdown`
+- `turnover`
+
 ## Troubleshooting
 
 - If `python` is not available on Windows, try `py`.
