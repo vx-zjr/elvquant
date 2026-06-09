@@ -1,0 +1,79 @@
+{
+  "config_summary": {
+    "asset_ids": "SPY.US,QQQ.US,IWM.US,TLT.US,GLD.US",
+    "data_file_hash": "87796dd0b69c",
+    "data_version": "kaggle-stooq-etf-eod-2015-01-01-2017-11-10-v1",
+    "end": "2017-11-10",
+    "fixed_commission": "1.0",
+    "initial_cash": "10000.00",
+    "lookback_observations": "20",
+    "proportional_commission_rate": "0.0005",
+    "provider": "stooq",
+    "seed": "stooq-etf-momentum-v1",
+    "slippage_rate": "0.001",
+    "start": "2015-01-01",
+    "strategy": "momentum_vs_equal_weight",
+    "test": "2017-01-01:2017-11-10",
+    "top_n": "1",
+    "train": "2015-01-01:2016-01-01",
+    "validation": "2016-01-01:2017-01-01"
+  },
+  "metadata": {
+    "config_hash": "19d07d3a0a40",
+    "data_file_hash": "87796dd0b69c",
+    "data_version": "kaggle-stooq-etf-eod-2015-01-01-2017-11-10-v1",
+    "git_commit": "d272691",
+    "seed": "stooq-etf-momentum-v1"
+  },
+  "metrics": {
+    "test_decision_count": 172.0,
+    "test_equal_weight_net_value": 1.039262653429136,
+    "test_equal_weight_total_return": 0.03926265342913604,
+    "test_momentum_max_drawdown": -0.07000366252287427,
+    "test_momentum_minus_equal_weight_return": -0.046842563180065855,
+    "test_momentum_net_value": 0.9924200902490702,
+    "test_momentum_total_cost": 1430.1418527653757,
+    "test_momentum_total_return": -0.007579909750929814,
+    "test_momentum_turnover": 81.14279018435836,
+    "train_decision_count": 183.0,
+    "train_equal_weight_net_value": 0.8750058151427377,
+    "train_equal_weight_total_return": -0.12499418485726232,
+    "train_momentum_max_drawdown": -0.2341822593512708,
+    "train_momentum_minus_equal_weight_return": -0.10918807449400847,
+    "train_momentum_net_value": 0.7658177406487292,
+    "train_momentum_total_cost": 1383.304018055392,
+    "train_momentum_total_return": -0.2341822593512708,
+    "train_momentum_turnover": 77.15360120369279,
+    "validation_decision_count": 199.0,
+    "validation_equal_weight_net_value": 1.0080991364758716,
+    "validation_equal_weight_total_return": 0.008099136475871571,
+    "validation_momentum_max_drawdown": -0.20456545709597496,
+    "validation_momentum_minus_equal_weight_return": -0.09035246278487519,
+    "validation_momentum_net_value": 0.9177466736909964,
+    "validation_momentum_total_cost": 1633.294272507903,
+    "validation_momentum_total_return": -0.08225332630900362,
+    "validation_momentum_turnover": 92.55295150052686
+  },
+  "notes": [
+    "Stooq v1 uses local normalized CSV only; no runtime network access in snapshots.",
+    "Execution keeps the current next-calendar-day assumption and skips dates without next-day prices."
+  ],
+  "run_id": "stooq-etf-momentum-20150101-20171110",
+  "sample_splits": {
+    "test": {
+      "decision_count": 172,
+      "end": "2017-11-10",
+      "start": "2017-01-01"
+    },
+    "train": {
+      "decision_count": 183,
+      "end": "2016-01-01",
+      "start": "2015-01-01"
+    },
+    "validation": {
+      "decision_count": 199,
+      "end": "2017-01-01",
+      "start": "2016-01-01"
+    }
+  }
+}
