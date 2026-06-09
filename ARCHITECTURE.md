@@ -45,3 +45,15 @@ Minimal synthetic implementations live in `src/qts/simple.py`:
 
 `run.py` runs the deterministic synthetic demo. It does not access real data,
 broker APIs, account state, or secrets.
+
+## Phase 4 Historical Data Location
+
+Historical CSV support lives in `src/qts/historical.py`:
+
+- `CsvHistoricalDataSource` reads normalized local CSV files.
+- `build_historical_smoke_backtester` wires the existing equal-weight pipeline to
+  the FRED sample data.
+- `run_historical_smoke` produces a report for the fixed FRED smoke run.
+
+The historical data source is read-only and does not change strategy, risk,
+execution, accounting, or `SimpleBacktester` behavior.

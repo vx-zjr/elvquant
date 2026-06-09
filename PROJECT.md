@@ -9,11 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 3 is complete once honesty probe tests guard against self-deception,
-look-ahead access, accounting imbalance, negative costs, position drift, missing
-run metadata, and basic risk bypasses. The next task is Phase 4: add a read-only
-historical data source without changing strategy, backtest, risk, or accounting
-behavior.
+Phase 4 is complete once a read-only historical CSV data source can run the
+existing equal-weight smoke test and all honesty probes still pass. The next task
+is Phase 5: add the first simple rule-based research strategy without modifying
+the backtest engine.
 
 ## Explicit Non-Goals
 
@@ -22,7 +21,7 @@ behavior.
 - No live trading or real-money order submission.
 - No ML or AI-driven signal generation.
 - No production strategy implementation.
-- No real data source implementation.
+- No broker data source implementation.
 - No secrets, API keys, account identifiers, or passwords in code or docs.
 
 ## Required Start Protocol

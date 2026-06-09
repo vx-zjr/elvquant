@@ -3,7 +3,8 @@
 ## Current Data State
 
 Phase 2 includes `SyntheticDataSource`, a deterministic fake price source used
-only for testing the pipeline shape.
+only for testing the pipeline shape. Phase 4 introduces a read-only CSV
+historical data source backed by a small fixed FRED sample.
 
 ## Rules
 
@@ -24,3 +25,28 @@ only for testing the pipeline shape.
 - Missing values: exact decision-time lookup only; missing timestamps raise an
   explicit error.
 - Visibility: a snapshot exposes only prices for the requested decision time.
+
+## Historical CSV Rules
+
+- Source name: `CsvHistoricalDataSource`.
+- Sample source: Federal Reserve Economic Data (FRED), public CSV export.
+- Series:
+  - `SP500`: S&P 500 index level.
+  - `NASDAQCOM`: NASDAQ Composite index level.
+- Source pages:
+  - `https://fred.stlouisfed.org/series/SP500`
+  - `https://fred.stlouisfed.org/series/NASDAQCOM`
+- Source CSV URLs:
+  - `https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500&cosd=2024-01-02&coed=2024-01-10`
+  - `https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2024-01-02&coed=2024-01-10`
+- Repository sample file: `data/historical/fred_index_sample.csv`.
+- Data version: `fred-index-sample-20240102-20240110-v1`.
+- Fields: `date`, `asset_id`, `close`, `source`, `source_url`, `data_version`.
+- Time zone: dates are interpreted as UTC midnight decision timestamps.
+- Adjustment rule: no price adjustment is applied. FRED values are index levels,
+  not broker-tradable adjusted security prices.
+- Missing values: blank values or FRED `.` values are invalid and must raise an
+  explicit error. Missing timestamps or missing asset values must also raise.
+- Visibility: a snapshot returns only rows for the requested date. The data
+  source may load the file into memory, but callers only receive the requested
+  decision-time prices.

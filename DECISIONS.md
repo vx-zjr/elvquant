@@ -66,3 +66,20 @@ Consequences:
 - `SimpleExecutionSimulator` accepts a non-negative `cost_rate` so tests can
   prove flat-price equal-weight runs do not get rich after costs.
 - Real historical data work may begin only after these probes remain green.
+
+## ADR-004: Use a Fixed FRED CSV Sample for Historical Smoke Runs
+
+Date: 2026-06-09
+
+Decision: Phase 4 uses a small normalized CSV sample from FRED series `SP500`
+and `NASDAQCOM` for a read-only historical data smoke test.
+
+Rationale: A fixed local sample keeps tests deterministic and avoids runtime
+network access, API keys, and broker dependencies while proving the pipeline can
+consume real historical index levels.
+
+Consequences:
+- The sample is engineering test data, not live trading input.
+- Missing dates and missing values raise explicit errors.
+- Future real data sources must document source, fields, timezone, adjustment,
+  missing-value, and versioning rules before implementation.

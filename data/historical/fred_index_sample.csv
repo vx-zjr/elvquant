@@ -1,0 +1,15 @@
+date,asset_id,close,source,source_url,data_version
+2024-01-02,SP500,4742.83,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-03,SP500,4704.81,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-04,SP500,4688.68,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-05,SP500,4697.24,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-08,SP500,4763.54,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-09,SP500,4756.50,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-10,SP500,4783.45,FRED,https://fred.stlouisfed.org/series/SP500,fred-index-sample-20240102-20240110-v1
+2024-01-02,NASDAQCOM,14765.940,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1
+2024-01-03,NASDAQCOM,14592.210,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1
+2024-01-04,NASDAQCOM,14510.300,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1
+2024-01-05,NASDAQCOM,14524.070,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1
+2024-01-08,NASDAQCOM,14843.770,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1
+2024-01-09,NASDAQCOM,14857.710,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1
+2024-01-10,NASDAQCOM,14969.650,FRED,https://fred.stlouisfed.org/series/NASDAQCOM,fred-index-sample-20240102-20240110-v1

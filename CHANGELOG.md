@@ -2,6 +2,10 @@
 
 ## 2026-06-09
 
+- Added a read-only historical CSV data source and a fixed FRED sample covering
+  `SP500` and `NASDAQCOM` index levels from 2024-01-02 to 2024-01-10.
+- Added a historical smoke run that reuses the equal-weight pipeline without
+  changing the backtester, strategy, risk, execution, or accounting modules.
 - Added honesty probe tests for cost drag, future-data absence, accounting
   identity, non-negative costs, no-trade position stability, risk rejection, and
   run metadata.

@@ -152,7 +152,7 @@ Agent instructions:
 
 ## Task ID: QTS-004
 
-Status: Pending
+Status: Completed
 Phase: 4
 Title: Add read-only historical data source
 
@@ -189,3 +189,43 @@ Agent instructions:
 - Write tests before implementation.
 - Preserve backtester, strategy, risk, execution, and accounting modules unless
   a test proves a narrow compatibility fix is required.
+
+## Task ID: QTS-005
+
+Status: Pending
+Phase: 5
+Title: Add first rule-based momentum strategy
+
+Scope:
+- Add a simple daily momentum `SignalModel`.
+- Compare momentum results with the equal-weight baseline.
+- Do not modify `SimpleBacktester`.
+- Do not modify `SimpleAccountingLedger`.
+- Do not modify `SimpleExecutionSimulator`.
+- Do not add ML.
+- Do not connect to live data or broker APIs.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `CONTRACTS.md`
+- `PROJECT.md`
+- `EXPERIMENTS.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Strategy test uses known prices and verifies the strongest past performer is
+  selected.
+- Strategy reads only from `DataSnapshot`.
+- End-to-end backtest passes.
+- Report can compare momentum and equal-weight baseline metrics.
+- `EXPERIMENTS.md` records parameters, results, and observations.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write the strategy test before implementation.
+- Keep the strategy behind the `SignalModel` contract.
+- Do not use future prices or full future price tables.
