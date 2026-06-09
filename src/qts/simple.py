@@ -10,6 +10,7 @@ from qts.contracts import (
     AccountingLedger,
     AssetId,
     BacktestResult,
+    CostModel,
     DataSnapshot,
     DataSource,
     ExecutionSimulator,
@@ -139,6 +140,7 @@ class SimpleExecutionSimulator:
     """Fill approved orders at the provided synthetic execution snapshot price."""
 
     cost_rate: float = 0.0
+    cost_model: CostModel | None = None
 
     def __post_init__(self) -> None:
         if self.cost_rate < 0.0:
@@ -158,10 +160,18 @@ class SimpleExecutionSimulator:
                     order=order,
                     price=price,
                     quantity=order.quantity,
-                    cost=abs(price * order.quantity) * self.cost_rate,
+                    cost=self._estimate_cost(order, price),
                 )
             )
         return tuple(fills)
+
+    def _estimate_cost(self, order: Order, price: float) -> float:
+        cost = abs(price * order.quantity) * self.cost_rate
+        if self.cost_model is not None:
+            cost += self.cost_model.estimate(order, price)
+        if cost < 0.0:
+            raise ValueError("execution cost must not be negative")
+        return cost
 
 
 @dataclass(frozen=True)
@@ -317,6 +327,8 @@ class SimpleReporter:
             f"total_return: {result.metrics['total_return']:.6f}",
             f"max_drawdown: {result.metrics['max_drawdown']:.6f}",
             f"turnover: {result.metrics['turnover']:.6f}",
+            f"total_cost: {result.metrics['total_cost']:.6f}",
+            f"cost_to_return: {result.metrics['cost_to_return']:.6f}",
         ]
         return Report(run_id=result.run_id, text="\n".join(lines), metrics=result.metrics)
 
@@ -371,11 +383,16 @@ def _metrics(
     total_return = net_value - 1.0
     max_drawdown = _max_drawdown(tuple(state.equity for state in equity_curve))
     turnover = turnover_notional / initial_cash
+    total_cost = equity_curve[-1].cumulative_cost
+    profit_or_loss = ending_equity - initial_cash
+    cost_to_return = total_cost / abs(profit_or_loss) if abs(profit_or_loss) > _EPSILON else 0.0
     return {
         "net_value": net_value,
         "total_return": total_return,
         "max_drawdown": max_drawdown,
         "turnover": turnover,
+        "total_cost": total_cost,
+        "cost_to_return": cost_to_return,
     }
 
 

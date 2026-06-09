@@ -71,3 +71,17 @@ Research strategies and strategy comparisons live in `src/qts/strategies.py`:
 
 The strategy does not access full future price tables and does not modify the
 backtester, ledger, execution simulator, or risk manager.
+
+## Phase 6 Cost Model Location
+
+Cost models live in `src/qts/costs.py`:
+
+- `FixedCommissionCostModel`
+- `ProportionalCommissionCostModel`
+- `SlippageCostModel`
+- `CompositeCostModel`
+
+`SimpleExecutionSimulator` estimates costs through the `CostModel` contract and
+stores the resulting total cost in each `Fill`. `SimpleAccountingLedger` already
+accumulates fill costs, and reports now include `total_cost` and
+`cost_to_return`.

@@ -232,7 +232,7 @@ Agent instructions:
 
 ## Task ID: QTS-006
 
-Status: Pending
+Status: Completed
 Phase: 6
 Title: Add explicit cost model and execution assumptions
 
@@ -268,3 +268,48 @@ Agent instructions:
 - Write failing cost tests before implementation.
 - Keep strategy code unchanged.
 - Update contracts before implementing new cost interfaces.
+
+## Task ID: QTS-007
+
+Status: Pending
+Phase: 7
+Title: Expand basic risk controls
+
+Scope:
+- Strengthen `RiskManager` so any target or order path passes documented risk
+  checks.
+- Add tests for each risk rule.
+- Report risk rejection counts and reasons.
+- Do not change strategy logic.
+- Do not add ML.
+- Do not connect to live broker APIs.
+
+Risk rules:
+- No short positions.
+- Single asset maximum weight 20%.
+- Total target exposure maximum 95%.
+- Daily turnover maximum 50%.
+- Stop new opens after daily loss exceeds threshold.
+- Reject missing or abnormal prices.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `RISK_POLICY.md`
+- `REVIEW.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Every risk rule has a passing test.
+- Backtests still call `RiskManager`.
+- Reports show risk rejection counts and reasons.
+- `REVIEW.md` includes risk checks.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Update `RISK_POLICY.md` before implementation.
+- Write failing risk tests before code changes.
+- Keep strategy behavior unchanged.

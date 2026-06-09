@@ -153,6 +153,14 @@ class ExecutionSimulator(Protocol):
         ...
 
 
+class CostModel(Protocol):
+    """Estimate visible non-negative execution cost at a decision time without future data."""
+
+    def estimate(self, order: Order, price: float) -> float:
+        """Return the non-negative estimated cost for an order and visible execution price."""
+        ...
+
+
 class AccountingLedger(Protocol):
     """Record visible cash, positions, costs, and equity at a decision time without future data."""
 
@@ -179,6 +187,7 @@ __all__ = [
     "AssetId",
     "BacktestResult",
     "Backtester",
+    "CostModel",
     "DataSnapshot",
     "DataSource",
     "ExecutionSimulator",

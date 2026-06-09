@@ -25,8 +25,16 @@ data sources, or a backtest loop.
 - `RiskManager.evaluate(snapshot, target, orders) -> RiskDecision`
 - `Backtester.run(start, end, config) -> BacktestResult`
 - `ExecutionSimulator.simulate(snapshot, orders) -> Sequence[Fill]`
+- `CostModel.estimate(order, price) -> float`
 - `AccountingLedger.apply_fills(previous_state, fills, snapshot) -> LedgerState`
 - `Reporter.build(result) -> Report`
+
+## CostModel Semantics
+
+`CostModel.estimate(order, price)` returns a non-negative cost estimate for a
+visible order and execution price. Cost models must not inspect future prices,
+strategy internals, or account secrets. All estimated costs must enter `Fill.cost`
+and then `AccountingLedger.cumulative_cost`.
 
 ## SignalModel Semantics
 

@@ -100,3 +100,19 @@ Consequences:
 - Momentum is compared with equal weight as an engineering research comparison,
   not as trading advice.
 - Backtester, execution, accounting, and risk modules remain unchanged.
+
+## ADR-006: Model Costs Explicitly Before More Risk Expansion
+
+Date: 2026-06-09
+
+Decision: Phase 6 introduces a `CostModel` contract with fixed commission,
+proportional commission, slippage, and composite implementations.
+
+Rationale: Cost assumptions must be visible and testable before interpreting
+strategy results or strengthening risk controls.
+
+Consequences:
+- Execution fills carry explicit non-negative costs.
+- Accounting accumulates costs without strategy involvement.
+- Reports include `total_cost` and `cost_to_return`.
+- Strategy modules remain unchanged.

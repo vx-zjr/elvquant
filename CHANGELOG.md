@@ -2,6 +2,10 @@
 
 ## 2026-06-09
 
+- Added explicit fixed commission, proportional commission, slippage, and
+  composite cost models behind a `CostModel` contract.
+- Updated execution/reporting so costs enter fills, ledger cumulative cost,
+  `total_cost`, and `cost_to_return`.
 - Added a research-only momentum signal that ranks assets from visible trailing
   return features in `DataSnapshot`.
 - Added a trailing-return feature data source wrapper and a report comparing

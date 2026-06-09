@@ -58,3 +58,23 @@
   - momentum_minus_equal_weight_return: 0.000778
 - Observation: Momentum was slightly higher on this tiny sample, but the sample
   is far too small for investment conclusions.
+
+## 2026-06-09 Explicit Cost Smoke Run
+
+- Task: QTS-006
+- Command: inline Python smoke run using `CompositeCostModel`
+- run_id: `synthetic-20260101-20260106`
+- Data source: `SyntheticDataSource`
+- Cost assumptions:
+  - fixed commission: 1.0 per non-zero order
+  - proportional commission: 0.001 of absolute traded notional
+  - slippage: 0.002 of absolute traded notional
+- Metrics:
+  - net_value: 1.048410
+  - total_return: 0.048410
+  - max_drawdown: -0.003340
+  - turnover: 1.037360
+  - total_cost: 46.120798
+  - cost_to_return: 0.095272
+- Observation: Cost-enabled return is lower than the no-cost synthetic run, as
+  expected.

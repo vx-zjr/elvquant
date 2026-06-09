@@ -60,3 +60,13 @@ historical data source backed by a small fixed FRED sample.
   is absent rather than filled with future data.
 - Strategies may consume only the feature values present in the supplied
   `DataSnapshot`.
+
+## Execution and Cost Assumptions
+
+- Phase 6 execution still simulates fills at the provided execution snapshot
+  price; no broker quotes or live order books are used.
+- Fixed commission is charged per non-zero order.
+- Proportional commission is charged on absolute traded notional.
+- Slippage is represented as an additional cost on absolute traded notional, not
+  as a modified market price.
+- All cost estimates must be non-negative and must be recorded in `Fill.cost`.

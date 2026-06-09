@@ -9,10 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 5 is complete once the first simple rule-based momentum research strategy
-can run and compare against the equal-weight baseline. The next task is Phase 6:
-add more explicit cost and execution assumptions without changing strategy
-logic.
+Phase 6 is complete once explicit fixed commission, proportional commission, and
+slippage cost assumptions feed execution fills, accounting, and reports. The next
+task is Phase 7: expand the risk layer so every target/order path has stricter
+documented risk checks.
 
 ## Explicit Non-Goals
 

@@ -43,6 +43,8 @@ Expected output includes:
 - `total_return`
 - `max_drawdown`
 - `turnover`
+- `total_cost`
+- `cost_to_return`
 
 ## Historical FRED Smoke Run
 
@@ -66,6 +68,15 @@ Windows:
 
 These commands use the fixed FRED sample and do not connect to live data or a
 broker.
+
+## Cost Smoke Run
+
+Use the Python API to create `CompositeCostModel` with fixed commission,
+proportional commission, and slippage. A minimal command is:
+
+```powershell
+.venv\Scripts\python -c "from qts.costs import CompositeCostModel, FixedCommissionCostModel, ProportionalCommissionCostModel, SlippageCostModel; print('cost models import ok')"
+```
 
 ## Troubleshooting
 
