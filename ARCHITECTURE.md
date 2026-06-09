@@ -111,3 +111,16 @@ Structured report generation lives in `src/qts/reporting.py`:
   range, metrics, equity curve, final positions, and monthly returns.
 
 Generated report artifacts live under `reports/<run_id>/`.
+
+## Phase 9 Paper Trading Location
+
+Paper trading lives in `src/qts/paper.py`:
+
+- `PaperTradingConfig` requires `broker_submission="disabled"`.
+- `PaperTradingEngine` reads data, generates signals and targets, creates
+  simulated orders, runs risk checks, and writes local files.
+- Orders are appended to `orders.jsonl`.
+- Daily reports are written under `daily_reports/`.
+- Failures are appended to `failures.jsonl` and re-raised.
+
+No broker API client or real order submission path exists.

@@ -1,0 +1,6 @@
+{"asset_id": "AAA", "broker_submission": "disabled", "decision_time": "2026-01-01T00:00:00+00:00", "quantity": 50.0, "reason": "paper_rebalance_to_target", "risk_allowed": true, "risk_reasons": []}
+{"asset_id": "BBB", "broker_submission": "disabled", "decision_time": "2026-01-01T00:00:00+00:00", "quantity": 45.45454545454545, "reason": "paper_rebalance_to_target", "risk_allowed": true, "risk_reasons": []}
+{"asset_id": "AAA", "broker_submission": "disabled", "decision_time": "2026-01-02T00:00:00+00:00", "quantity": 0.09000900090008919, "reason": "paper_rebalance_to_target", "risk_allowed": true, "risk_reasons": []}
+{"asset_id": "BBB", "broker_submission": "disabled", "decision_time": "2026-01-02T00:00:00+00:00", "quantity": -0.08153281695882518, "reason": "paper_rebalance_to_target", "risk_allowed": true, "risk_reasons": []}
+{"asset_id": "AAA", "broker_submission": "disabled", "decision_time": "2026-01-03T00:00:00+00:00", "quantity": 0.08808583311509424, "reason": "paper_rebalance_to_target", "risk_allowed": true, "risk_reasons": []}
+{"asset_id": "BBB", "broker_submission": "disabled", "decision_time": "2026-01-03T00:00:00+00:00", "quantity": -0.07951110599770374, "reason": "paper_rebalance_to_target", "risk_allowed": true, "risk_reasons": []}

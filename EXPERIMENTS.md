@@ -102,3 +102,17 @@
   - risk_rejection_reason_total_exposure_exceeds_100__or_configured_limit: 3
 - Observation: Strict limits blocked all equal-weight rebalance attempts for the
   three-asset synthetic demo, and the report exposed the reasons.
+
+## 2026-06-09 Synthetic Paper Trading Smoke Run
+
+- Task: QTS-009
+- Command: inline Python paper run over three synthetic days
+- Output directory: `paper_runs/synthetic-paper-demo`
+- Order log: `paper_runs/synthetic-paper-demo/orders.jsonl`
+- Daily reports:
+  - `paper_runs/synthetic-paper-demo/daily_reports/2026-01-01.md`
+  - `paper_runs/synthetic-paper-demo/daily_reports/2026-01-02.md`
+  - `paper_runs/synthetic-paper-demo/daily_reports/2026-01-03.md`
+- Broker submission: disabled
+- Observation: Multiple paper days ran without manual code changes, generated
+  local simulated orders, and produced daily reports.

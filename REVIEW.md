@@ -18,6 +18,7 @@ Before completing any task, verify:
   trading expansion.
 - Risk checks were run when targets, orders, or execution paths changed.
 - Reports include risk rejection counts and reasons when rejections occur.
+- Paper trading writes local files only and keeps broker submission disabled.
 
 ## Phase 0 Review
 
@@ -35,3 +36,9 @@ Before completing any task, verify:
 
 - Risk rules cover short targets, single-asset exposure, total exposure, daily
   turnover, daily loss stops, and missing or abnormal prices.
+
+## Phase 9 Review
+
+- Paper trading logs orders locally with `broker_submission: disabled`.
+- Paper daily reports are generated.
+- Paper failures are logged explicitly.

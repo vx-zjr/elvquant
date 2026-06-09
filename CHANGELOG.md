@@ -2,6 +2,9 @@
 
 ## 2026-06-09
 
+- Added local-only paper trading mode with simulated orders, mandatory risk
+  checks, local JSONL order logs, Markdown daily reports, and explicit failure
+  logs.
 - Added structured JSON and Markdown experiment report generation with git
   commit, config hash, data version, seed, date range, metrics, holdings, equity
   curve, and monthly returns.

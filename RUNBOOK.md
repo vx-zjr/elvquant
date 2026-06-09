@@ -88,6 +88,20 @@ Windows:
 
 This writes both JSON and Markdown report files under `reports/<run_id>/`.
 
+## Paper Trading
+
+Start a local synthetic paper run:
+
+```powershell
+.venv\Scripts\python -c "from datetime import UTC, datetime, timedelta; from pathlib import Path; from qts.paper import PaperTradingConfig, PaperTradingEngine; from qts.simple import BasicRiskManager, EqualWeightSignal, SimpleAccountingLedger, SimpleExecutionSimulator, SimplePortfolioConstructor, SyntheticDataSource; start=datetime(2026,1,1,tzinfo=UTC); engine=PaperTradingEngine(data_source=SyntheticDataSource(asset_ids=('AAA','BBB'), start=start, periods=4), signal_model=EqualWeightSignal(), portfolio_constructor=SimplePortfolioConstructor(), risk_manager=BasicRiskManager(), execution_simulator=SimpleExecutionSimulator(), ledger=SimpleAccountingLedger(), config=PaperTradingConfig(output_dir=Path('paper_runs/synthetic-paper-demo'), initial_cash=10000.0)); print(engine.run_days(tuple(start + timedelta(days=i) for i in range(3))))"
+```
+
+Stop procedure: no daemon is started; stop by not invoking the next run. Delete
+or archive local paper output only after reviewing it.
+
+Troubleshooting: inspect `paper_runs/<run>/failures.jsonl` for explicit failure
+records. Paper mode must never require broker credentials.
+
 ## Troubleshooting
 
 - If `python` is not available on Windows, try `py`.

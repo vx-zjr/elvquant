@@ -352,7 +352,7 @@ Agent instructions:
 
 ## Task ID: QTS-009
 
-Status: Pending
+Status: Completed
 Phase: 9
 Title: Add paper trading mode
 
@@ -385,3 +385,41 @@ Agent instructions:
 - Write failing paper-mode tests before implementation.
 - Do not add broker keys or broker API clients.
 - Keep risk checks mandatory.
+
+## Task ID: QTS-010
+
+Status: Pending
+Phase: 10
+Title: Add ML signal research module
+
+Scope:
+- Add an ML-style research signal module that still obeys `SignalModel`.
+- Use time-based train, validation, and test splits.
+- Record feature version, data version, model parameters, and random seed.
+- Compare ML output with the rule-based momentum strategy.
+- Do not modify `SimpleBacktester`.
+- Do not modify risk, execution, or accounting.
+- Do not connect to live trading.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `PROJECT.md`
+- `CONTRACTS.md`
+- `EXPERIMENTS.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Time split tests pass.
+- Feature no-future-data tests pass.
+- Model results are reproducible.
+- Report compares ML versus rule strategy.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing ML research tests before implementation.
+- Keep ML behind `SignalModel`.
+- Do not tune on the test set.

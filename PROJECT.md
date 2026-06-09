@@ -9,10 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 8 is complete once structured JSON and Markdown report files include
-reproducibility metadata, metrics, holdings, monthly returns, and config hashes.
-The next task is Phase 9: add paper trading mode that writes local simulated
-orders and daily reports without broker connectivity.
+Phase 9 is complete once paper trading can run across multiple days, write local
+simulated orders and daily reports, log failures explicitly, and keep broker
+submission disabled. The next task is Phase 10: add an ML research signal layer
+that still obeys the `SignalModel` boundary.
 
 ## Explicit Non-Goals
 

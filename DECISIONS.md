@@ -148,3 +148,18 @@ Consequences:
 - `EXPERIMENTS.md` remains a summary and links to concrete report files.
 - Future report generators must avoid changing metric definitions to improve
   presentation.
+
+## ADR-009: Paper Trading Is Local-Only
+
+Date: 2026-06-09
+
+Decision: Phase 9 paper trading writes simulated orders, daily reports, and
+failure logs to local files only.
+
+Rationale: The project must rehearse daily operation before any broker
+integration or real-money order path exists.
+
+Consequences:
+- `PaperTradingConfig` rejects broker submission modes other than `disabled`.
+- Paper orders include `broker_submission: disabled`.
+- Risk checks remain mandatory before simulated orders are logged.
