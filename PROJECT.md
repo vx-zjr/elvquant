@@ -9,10 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 7 is complete once configurable risk checks cover shorts, per-asset
-weights, total exposure, turnover, daily loss stops, and abnormal prices, with
-reporting for rejection counts and reasons. The next task is Phase 8: add
-structured experiment records and report files.
+Phase 8 is complete once structured JSON and Markdown report files include
+reproducibility metadata, metrics, holdings, monthly returns, and config hashes.
+The next task is Phase 9: add paper trading mode that writes local simulated
+orders and daily reports without broker connectivity.
 
 ## Explicit Non-Goals
 

@@ -2,6 +2,10 @@
 
 ## 2026-06-09
 
+- Added structured JSON and Markdown experiment report generation with git
+  commit, config hash, data version, seed, date range, metrics, holdings, equity
+  curve, and monthly returns.
+- Added a tracked momentum smoke report under `reports/`.
 - Expanded configurable risk controls for single-asset exposure, total exposure,
   turnover, daily loss stops, and missing or abnormal prices.
 - Added risk rejection counts and reason metrics to backtest reports.

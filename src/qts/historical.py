@@ -133,6 +133,7 @@ def run_historical_smoke(path: Path = _DEFAULT_SAMPLE) -> Report:
         end=end,
         config={
             "seed": "fred-smoke",
+            "data_source": "fred_csv",
             "historical_data_source": "FRED",
             "data_version": data_source.data_version,
         },

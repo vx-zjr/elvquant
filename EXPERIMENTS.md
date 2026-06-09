@@ -41,6 +41,10 @@
 - Task: QTS-005
 - Command: `.venv\Scripts\python -c "from qts.strategies import run_momentum_smoke; print(run_momentum_smoke().text)"`
 - run_id: `momentum-fred-20240102-20240110`
+- Structured reports:
+  - JSON: `reports/momentum-fred-20240102-20240110/momentum-fred-20240102-20240110.json`
+  - Markdown: `reports/momentum-fred-20240102-20240110/momentum-fred-20240102-20240110.md`
+- config_hash: `1f779b266139`
 - Data source: `CsvHistoricalDataSource` plus `TrailingReturnFeatureDataSource`
 - Data version: `fred-index-sample-20240102-20240110-v1`
 - Strategy: `MomentumSignal`

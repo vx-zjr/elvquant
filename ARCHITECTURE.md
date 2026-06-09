@@ -100,3 +100,14 @@ accumulates fill costs, and reports now include `total_cost` and
 `SimpleBacktester` passes the latest ledger state into `RiskManager` and records
 rejection counts and reason counts in result metrics. `SimpleReporter` includes
 those risk metrics in text output.
+
+## Phase 8 Reporting Location
+
+Structured report generation lives in `src/qts/reporting.py`:
+
+- `stable_config_hash` produces stable hashes for config maps.
+- `write_experiment_report` writes JSON and Markdown reports.
+- Report payloads include git commit, config hash, data version, seed, date
+  range, metrics, equity curve, final positions, and monthly returns.
+
+Generated report artifacts live under `reports/<run_id>/`.

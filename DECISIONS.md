@@ -132,3 +132,19 @@ Consequences:
   loss checks.
 - `SimpleBacktester` passes current ledger state to risk evaluation.
 - `SimpleReporter` includes `risk_rejections` and reason metrics.
+
+## ADR-008: Store Structured Reports as Versioned Artifacts
+
+Date: 2026-06-09
+
+Decision: Phase 8 writes JSON and Markdown report artifacts under
+`reports/<run_id>/` and tracks them in git.
+
+Rationale: Report files make experiments reviewable without rerunning code and
+connect results to code version, config hash, data version, and seed.
+
+Consequences:
+- `reports/` is no longer ignored.
+- `EXPERIMENTS.md` remains a summary and links to concrete report files.
+- Future report generators must avoid changing metric definitions to improve
+  presentation.

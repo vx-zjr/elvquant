@@ -12,6 +12,5 @@ build/
 .env
 .env.*
 !.env.example
-reports/
 data/raw/
 data/processed/

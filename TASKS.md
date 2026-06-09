@@ -316,7 +316,7 @@ Agent instructions:
 
 ## Task ID: QTS-008
 
-Status: Pending
+Status: Completed
 Phase: 8
 Title: Add structured experiment records and report files
 
@@ -349,3 +349,39 @@ Acceptance criteria:
 Agent instructions:
 - Write failing report-file tests before implementation.
 - Do not alter strategy logic or metrics definitions.
+
+## Task ID: QTS-009
+
+Status: Pending
+Phase: 9
+Title: Add paper trading mode
+
+Scope:
+- Add paper trading configuration.
+- Generate target positions, simulated orders, risk results, and daily reports.
+- Write orders only to local logs or files.
+- Do not connect to real broker APIs.
+- Do not submit real-money orders.
+- Do not bypass risk.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `RUNBOOK.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Multiple trading days can run without manual code changes.
+- Failures are explicit and logged.
+- Orders are written locally only.
+- Daily paper reports are generated.
+- `RUNBOOK.md` explains start, stop, and troubleshooting.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing paper-mode tests before implementation.
+- Do not add broker keys or broker API clients.
+- Keep risk checks mandatory.

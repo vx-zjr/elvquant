@@ -333,9 +333,9 @@ class SimpleBacktester:
             risk_reason_counts,
         )
         config_summary = {
-            **dict(config),
             "data_source": "synthetic",
             "initial_cash": f"{self.initial_cash:.2f}",
+            **dict(config),
         }
 
         return BacktestResult(

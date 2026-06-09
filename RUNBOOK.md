@@ -78,6 +78,16 @@ proportional commission, and slippage. A minimal command is:
 .venv\Scripts\python -c "from qts.costs import CompositeCostModel, FixedCommissionCostModel, ProportionalCommissionCostModel, SlippageCostModel; print('cost models import ok')"
 ```
 
+## Structured Report Generation
+
+Windows:
+
+```powershell
+.venv\Scripts\python -c "from dataclasses import replace; from pathlib import Path; from qts.reporting import write_experiment_report; from qts.strategies import build_momentum_smoke_backtester; bt,start,end,ds=build_momentum_smoke_backtester(); result=bt.run(start=start,end=end,config={'seed':'momentum-fred-smoke','data_source':'fred_csv_trailing_return','strategy':'momentum','feature_name':'momentum_1','lookback_observations':'1','data_version':ds.data_version}); result=replace(result, run_id=f'momentum-fred-{start:%Y%m%d}-{end:%Y%m%d}'); print(write_experiment_report(result, Path('reports'), start, end))"
+```
+
+This writes both JSON and Markdown report files under `reports/<run_id>/`.
+
 ## Troubleshooting
 
 - If `python` is not available on Windows, try `py`.

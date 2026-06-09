@@ -154,6 +154,7 @@ def run_momentum_smoke(path: Path = _FRED_SAMPLE) -> Report:
         end=end,
         config={
             "seed": "momentum-fred-smoke",
+            "data_source": "fred_csv_trailing_return",
             "strategy": "momentum",
             "feature_name": "momentum_1",
             "lookback_observations": "1",
@@ -173,6 +174,7 @@ def compare_momentum_to_equal_weight(path: Path = _FRED_SAMPLE) -> Report:
         end=end,
         config={
             "seed": "fred-smoke",
+            "data_source": "fred_csv",
             "strategy": "equal_weight",
             "data_version": baseline_data_source.data_version,
         },
@@ -183,6 +185,7 @@ def compare_momentum_to_equal_weight(path: Path = _FRED_SAMPLE) -> Report:
         end=end,
         config={
             "seed": "momentum-fred-smoke",
+            "data_source": "fred_csv_trailing_return",
             "strategy": "momentum",
             "feature_name": "momentum_1",
             "lookback_observations": "1",

@@ -1,0 +1,80 @@
+{
+  "config_summary": {
+    "data_source": "fred_csv_trailing_return",
+    "data_version": "fred-index-sample-20240102-20240110-v1",
+    "feature_name": "momentum_1",
+    "initial_cash": "10000.00",
+    "lookback_observations": "1",
+    "seed": "momentum-fred-smoke",
+    "strategy": "momentum"
+  },
+  "equity_curve": [
+    {
+      "as_of": "2024-01-02T00:00:00+00:00",
+      "cash": 10000.0,
+      "cumulative_cost": 0.0,
+      "equity": 10000.0,
+      "positions": {}
+    },
+    {
+      "as_of": "2024-01-04T00:00:00+00:00",
+      "cash": 34.28406248073952,
+      "cumulative_cost": 0.0,
+      "equity": 10000.0,
+      "positions": {
+        "SP500": 2.1254843447450584
+      }
+    },
+    {
+      "as_of": "2024-01-05T00:00:00+00:00",
+      "cash": -0.06259151292797327,
+      "cumulative_cost": 0.0,
+      "equity": 10018.194145991018,
+      "positions": {
+        "SP500": 2.132796437376831
+      }
+    },
+    {
+      "as_of": "2024-01-09T00:00:00+00:00",
+      "cash": -24.555913476675414,
+      "cumulative_cost": 0.0,
+      "equity": 10144.583662869969,
+      "positions": {
+        "NASDAQCOM": 0.6844351906415352
+      }
+    },
+    {
+      "as_of": "2024-01-10T00:00:00+00:00",
+      "cash": 0.1850075788650507,
+      "cumulative_cost": 0.0,
+      "equity": 10221.199338110382,
+      "positions": {
+        "NASDAQCOM": 0.6827824518630374
+      }
+    }
+  ],
+  "final_positions": {
+    "NASDAQCOM": 0.6827824518630374
+  },
+  "metadata": {
+    "config_hash": "1f779b266139",
+    "data_version": "fred-index-sample-20240102-20240110-v1",
+    "end": "2024-01-10T00:00:00+00:00",
+    "git_commit": "adb0939",
+    "seed": "momentum-fred-smoke",
+    "start": "2024-01-02T00:00:00+00:00"
+  },
+  "metrics": {
+    "cost_to_return": 0.0,
+    "max_drawdown": 0.0,
+    "net_value": 1.0221199338110383,
+    "risk_rejections": 0.0,
+    "total_cost": 0.0,
+    "total_return": 0.022119933811038273,
+    "turnover": 3.033858934329801
+  },
+  "monthly_returns": {
+    "2024-01": 0.022119933811
+  },
+  "run_id": "momentum-fred-20240102-20240110"
+}
