@@ -163,3 +163,18 @@ Consequences:
 - `PaperTradingConfig` rejects broker submission modes other than `disabled`.
 - Paper orders include `broker_submission: disabled`.
 - Risk checks remain mandatory before simulated orders are logged.
+
+## ADR-010: Keep ML Behind SignalModel
+
+Date: 2026-06-09
+
+Decision: Phase 10 adds a deterministic ML-style research signal that still
+returns `SignalSet` through the `SignalModel` contract.
+
+Rationale: ML can be evaluated as one signal source without changing execution,
+accounting, risk, or backtest mechanics.
+
+Consequences:
+- Chronological split and feature-visibility tests are mandatory.
+- ML comparison reports are research observations, not trading advice.
+- The system remains unable to submit live orders.

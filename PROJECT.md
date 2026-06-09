@@ -9,10 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 9 is complete once paper trading can run across multiple days, write local
-simulated orders and daily reports, log failures explicitly, and keep broker
-submission disabled. The next task is Phase 10: add an ML research signal layer
-that still obeys the `SignalModel` boundary.
+Phase 10 is complete once the ML-style research signal layer obeys the
+`SignalModel` boundary, uses chronological splits, checks feature visibility, and
+compares against the rule momentum strategy. The next task is Phase 11: perform
+a live-readiness review and list blockers before any real trading path.
 
 ## Explicit Non-Goals
 
@@ -28,6 +28,9 @@ that still obeys the `SignalModel` boundary.
 
 The momentum strategy is a research fixture for exercising the pipeline. It is
 not trading advice and must not be used for live orders.
+
+The ML-style signal is also research-only. It cannot place orders, alter risk
+checks, alter the backtest engine, or connect to live trading.
 
 ## Required Start Protocol
 

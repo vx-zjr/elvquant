@@ -116,3 +116,20 @@
 - Broker submission: disabled
 - Observation: Multiple paper days ran without manual code changes, generated
   local simulated orders, and produced daily reports.
+
+## 2026-06-09 ML Research Comparison
+
+- Task: QTS-010
+- Command: `.venv\Scripts\python -c "from qts.ml import compare_ml_to_momentum; print(compare_ml_to_momentum().text)"`
+- run_id: `comparison-ml-momentum-20240102-20240110`
+- Data version: `fred-index-sample-20240102-20240110-v1`
+- Feature version: `momentum_1-v1`
+- Seed: 11
+- Metrics:
+  - ml_net_value: 1.029725
+  - momentum_net_value: 1.022120
+  - ml_total_return: 0.029725
+  - momentum_total_return: 0.022120
+  - ml_minus_momentum_return: 0.007605
+- Observation: The ML-style model is deterministic and slightly higher on this
+  tiny sample. This is not sufficient evidence for live trading.

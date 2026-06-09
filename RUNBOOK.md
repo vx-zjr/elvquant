@@ -102,6 +102,17 @@ or archive local paper output only after reviewing it.
 Troubleshooting: inspect `paper_runs/<run>/failures.jsonl` for explicit failure
 records. Paper mode must never require broker credentials.
 
+## ML Research Comparison
+
+Windows:
+
+```powershell
+.venv\Scripts\python -c "from qts.ml import compare_ml_to_momentum; print(compare_ml_to_momentum().text)"
+```
+
+This is a research comparison only and does not alter risk, execution,
+accounting, or live trading behavior.
+
 ## Troubleshooting
 
 - If `python` is not available on Windows, try `py`.

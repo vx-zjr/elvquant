@@ -2,6 +2,9 @@
 
 ## 2026-06-09
 
+- Added a deterministic ML-style research signal layer with chronological split,
+  feature-visibility checks, reproducible training, and ML-vs-momentum
+  comparison reporting.
 - Added local-only paper trading mode with simulated orders, mandatory risk
   checks, local JSONL order logs, Markdown daily reports, and explicit failure
   logs.

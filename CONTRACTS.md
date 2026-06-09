@@ -51,6 +51,10 @@ such as `momentum_1` from `DataSnapshot.features[asset_id]` and returns positive
 scores only for the selected top-ranked assets. It must not load a full price
 table, query a data source, or inspect future prices.
 
+For Phase 10, `SimpleMLSignalModel` is an ML-style research model that still
+obeys the same `SignalModel` contract. Training helpers must use chronological
+splits and must reject features whose visible time is after the snapshot time.
+
 ## Time Semantics
 
 Every Protocol docstring must mention decision time, visible data, and the ban

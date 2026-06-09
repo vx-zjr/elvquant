@@ -388,7 +388,7 @@ Agent instructions:
 
 ## Task ID: QTS-010
 
-Status: Pending
+Status: Completed
 Phase: 10
 Title: Add ML signal research module
 
@@ -423,3 +423,40 @@ Agent instructions:
 - Write failing ML research tests before implementation.
 - Keep ML behind `SignalModel`.
 - Do not tune on the test set.
+
+## Task ID: QTS-011
+
+Status: Pending
+Phase: 11
+Title: Generate live-readiness review
+
+Scope:
+- Generate a readiness report from `REVIEW.md`, `RISK_POLICY.md`, and
+  `RUNBOOK.md`.
+- Do not implement automated live trading.
+- List blockers that prevent live trading.
+- Stop further live-order development if blockers exist.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `reports/`
+- `REVIEW.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Readiness report is generated.
+- Report states whether tests pass.
+- Report covers kill switch, order limits, loss limits, alerts, order
+  traceability, recovery, API key management, human confirmation, and paper
+  observation.
+- Blocking items are explicit.
+- No live order implementation is added.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing readiness-report tests before implementation.
+- Do not add broker APIs or live order submission.
