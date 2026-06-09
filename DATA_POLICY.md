@@ -50,3 +50,13 @@ historical data source backed by a small fixed FRED sample.
 - Visibility: a snapshot returns only rows for the requested date. The data
   source may load the file into memory, but callers only receive the requested
   decision-time prices.
+
+## Derived Feature Rules
+
+- `TrailingReturnFeatureDataSource` may derive trailing-return features from
+  earlier observations in a declared calendar.
+- Feature names must encode the lookback, such as `momentum_1`.
+- If the requested decision time has insufficient prior observations, the feature
+  is absent rather than filled with future data.
+- Strategies may consume only the feature values present in the supplied
+  `DataSnapshot`.

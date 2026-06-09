@@ -57,3 +57,17 @@ Historical CSV support lives in `src/qts/historical.py`:
 
 The historical data source is read-only and does not change strategy, risk,
 execution, accounting, or `SimpleBacktester` behavior.
+
+## Phase 5 Strategy Location
+
+Research strategies and strategy comparisons live in `src/qts/strategies.py`:
+
+- `MomentumSignal` reads visible trailing-return features from `DataSnapshot`.
+- `TrailingReturnFeatureDataSource` decorates a data source with past-observation
+  return features.
+- `run_momentum_smoke` runs the FRED sample momentum smoke test.
+- `compare_momentum_to_equal_weight` reports momentum versus equal-weight
+  baseline metrics.
+
+The strategy does not access full future price tables and does not modify the
+backtester, ledger, execution simulator, or risk manager.

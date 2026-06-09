@@ -9,10 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 4 is complete once a read-only historical CSV data source can run the
-existing equal-weight smoke test and all honesty probes still pass. The next task
-is Phase 5: add the first simple rule-based research strategy without modifying
-the backtest engine.
+Phase 5 is complete once the first simple rule-based momentum research strategy
+can run and compare against the equal-weight baseline. The next task is Phase 6:
+add more explicit cost and execution assumptions without changing strategy
+logic.
 
 ## Explicit Non-Goals
 
@@ -23,6 +23,11 @@ the backtest engine.
 - No production strategy implementation.
 - No broker data source implementation.
 - No secrets, API keys, account identifiers, or passwords in code or docs.
+
+## Strategy Disclaimer
+
+The momentum strategy is a research fixture for exercising the pipeline. It is
+not trading advice and must not be used for live orders.
 
 ## Required Start Protocol
 

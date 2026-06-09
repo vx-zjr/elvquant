@@ -192,7 +192,7 @@ Agent instructions:
 
 ## Task ID: QTS-005
 
-Status: Pending
+Status: Completed
 Phase: 5
 Title: Add first rule-based momentum strategy
 
@@ -229,3 +229,42 @@ Agent instructions:
 - Write the strategy test before implementation.
 - Keep the strategy behind the `SignalModel` contract.
 - Do not use future prices or full future price tables.
+
+## Task ID: QTS-006
+
+Status: Pending
+Phase: 6
+Title: Add explicit cost model and execution assumptions
+
+Scope:
+- Define a `CostModel` contract.
+- Add fixed commission, proportional commission, and slippage assumptions.
+- Ensure all costs enter `AccountingLedger`.
+- Show total cost, cost-to-return ratio, and turnover in reports.
+- Do not change strategy logic.
+- Do not optimize parameters.
+- Do not add ML.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `CONTRACTS.md`
+- `DATA_POLICY.md`
+- `EXPERIMENTS.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Cost non-negative tests pass.
+- No-cost and cost-enabled runs differ.
+- Cost-enabled return is not higher than no-cost return.
+- End-to-end backtest passes.
+- `EXPERIMENTS.md` records cost assumptions.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing cost tests before implementation.
+- Keep strategy code unchanged.
+- Update contracts before implementing new cost interfaces.

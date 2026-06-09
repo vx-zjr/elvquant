@@ -2,6 +2,10 @@
 
 ## 2026-06-09
 
+- Added a research-only momentum signal that ranks assets from visible trailing
+  return features in `DataSnapshot`.
+- Added a trailing-return feature data source wrapper and a report comparing
+  momentum with the equal-weight baseline on the fixed FRED sample.
 - Added a read-only historical CSV data source and a fixed FRED sample covering
   `SP500` and `NASDAQCOM` index levels from 2024-01-02 to 2024-01-10.
 - Added a historical smoke run that reuses the equal-weight pipeline without

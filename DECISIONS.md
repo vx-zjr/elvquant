@@ -83,3 +83,20 @@ Consequences:
 - Missing dates and missing values raise explicit errors.
 - Future real data sources must document source, fields, timezone, adjustment,
   missing-value, and versioning rules before implementation.
+
+## ADR-005: Keep Momentum as a Snapshot-Only Research Signal
+
+Date: 2026-06-09
+
+Decision: The first rule strategy is `MomentumSignal`, which ranks assets using
+trailing-return features already present in `DataSnapshot`.
+
+Rationale: This keeps strategy logic behind the `SignalModel` contract and
+prevents the strategy from reading full price tables or future observations.
+
+Consequences:
+- `TrailingReturnFeatureDataSource` is responsible for deriving visible past
+  return features.
+- Momentum is compared with equal weight as an engineering research comparison,
+  not as trading advice.
+- Backtester, execution, accounting, and risk modules remain unchanged.

@@ -28,6 +28,14 @@ data sources, or a backtest loop.
 - `AccountingLedger.apply_fills(previous_state, fills, snapshot) -> LedgerState`
 - `Reporter.build(result) -> Report`
 
+## SignalModel Semantics
+
+`SignalModel.generate(snapshot)` may only use fields present in the supplied
+`DataSnapshot`. For Phase 5, `MomentumSignal` reads a trailing-return feature
+such as `momentum_1` from `DataSnapshot.features[asset_id]` and returns positive
+scores only for the selected top-ranked assets. It must not load a full price
+table, query a data source, or inspect future prices.
+
 ## Time Semantics
 
 Every Protocol docstring must mention decision time, visible data, and the ban

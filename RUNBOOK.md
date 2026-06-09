@@ -55,6 +55,18 @@ Windows:
 This reads `data/historical/fred_index_sample.csv` and does not connect to FRED
 or any broker at runtime.
 
+## Momentum Smoke Run
+
+Windows:
+
+```powershell
+.venv\Scripts\python -c "from qts.strategies import run_momentum_smoke; print(run_momentum_smoke().text)"
+.venv\Scripts\python -c "from qts.strategies import compare_momentum_to_equal_weight; print(compare_momentum_to_equal_weight().text)"
+```
+
+These commands use the fixed FRED sample and do not connect to live data or a
+broker.
+
 ## Troubleshooting
 
 - If `python` is not available on Windows, try `py`.
