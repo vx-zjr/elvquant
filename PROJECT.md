@@ -36,6 +36,7 @@ checks, alter the backtest engine, or connect to live trading.
 
 Every agent must read these files before editing:
 
+- `docs/source/quant_trading_agent_plan.md`
 - `PROJECT.md`
 - `ARCHITECTURE.md`
 - `CONTRACTS.md`

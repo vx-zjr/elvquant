@@ -2,6 +2,8 @@
 
 ## 2026-06-09
 
+- Added the original quantitative trading agent development plan as a UTF-8
+  normalized source document under `docs/source/`.
 - Added a manual-confirmation dry-run order workflow that enforces kill switch,
   risk approval, and human confirmation before writing traceable local order
   records with broker submission disabled.
