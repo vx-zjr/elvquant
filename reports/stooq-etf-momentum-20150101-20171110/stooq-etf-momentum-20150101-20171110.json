@@ -22,7 +22,7 @@
     "config_hash": "19d07d3a0a40",
     "data_file_hash": "87796dd0b69c",
     "data_version": "kaggle-stooq-etf-eod-2015-01-01-2017-11-10-v1",
-    "git_commit": "d272691",
+    "git_commit": "9e33854",
     "seed": "stooq-etf-momentum-v1"
   },
   "metrics": {
