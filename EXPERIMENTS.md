@@ -153,9 +153,10 @@
 - Report path when local data exists:
   `reports/stooq-etf-momentum-20150101-20251231/`
 - Observation: Stooq direct scripted requests can return a browser verification
-  page in this environment. The downloader rejects non-CSV responses. Full
-  research should be run after valid Stooq CSV files are cached or manually
-  downloaded into `data/raw/stooq/` and normalized into
+  page or an API-key instruction page in this environment. The downloader
+  rejects non-CSV responses and supports optional `STOOQ_API_KEY` for local
+  runtime downloads. Full research should be run after valid Stooq CSV files
+  are cached or manually downloaded into `data/raw/stooq/` and normalized into
   `data/processed/stooq_etf_eod.csv`.
 
 ## 2026-06-09 Live Readiness Review

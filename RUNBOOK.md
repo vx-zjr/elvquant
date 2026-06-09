@@ -126,7 +126,7 @@ accounting, or live trading behavior.
 
 ## Stooq Real-Data Research
 
-Stooq v1 uses no API key. The example config is commit-safe:
+The example config is commit-safe and contains no API key:
 
 ```powershell
 .venv\Scripts\python -c "from pathlib import Path; from qts.stooq import load_stooq_research_config; print(load_stooq_research_config(Path('configs/stooq_etf_momentum.example.toml')))"
@@ -136,12 +136,16 @@ Prepare normalized local CSV before research. Runtime snapshots must read only
 the local normalized file:
 
 ```powershell
+$env:STOOQ_API_KEY="<optional local key, never commit>"
 .venv\Scripts\python -c "from pathlib import Path; from qts.stooq import cache_stooq_daily_csv; print(cache_stooq_daily_csv('SPY.US','2015-01-01','2025-12-31',Path('data/raw/stooq')))"
 ```
 
-If Stooq returns a browser verification page instead of CSV, the downloader will
-fail intentionally. Retry later, use a browser/manual download for the raw CSV,
-or switch to the next documented provider task. Never treat HTML as market data.
+If Stooq returns a browser verification page or an API-key instruction page
+instead of CSV, the downloader will fail intentionally. Get a key through
+Stooq's account/download flow if you are allowed to use it, keep it in
+`STOOQ_API_KEY` or a gitignored `.env`, use a browser/manual download for the
+raw CSV, or switch to the next documented provider task. Never treat HTML as
+market data.
 
 After raw CSV files are available, normalize them into
 `data/processed/stooq_etf_eod.csv` with `write_stooq_normalized_csv`, then run:

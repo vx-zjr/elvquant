@@ -79,6 +79,49 @@ def test_stooq_downloader_rejects_non_csv_responses(tmp_path: Path) -> None:
         )
 
 
+def test_stooq_daily_csv_url_can_include_api_key() -> None:
+    from qts.stooq import stooq_daily_csv_url
+
+    url = stooq_daily_csv_url(
+        asset_id="SPY.US",
+        start="2024-01-01",
+        end="2024-01-05",
+        api_key="unit-test-key",
+    )
+
+    assert url == (
+        "https://stooq.com/q/d/l/?s=spy.us&i=d&d1=20240101&d2=20240105"
+        "&apikey=unit-test-key"
+    )
+
+
+def test_stooq_downloader_reads_api_key_from_environment(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from qts.stooq import cache_stooq_daily_csv
+
+    seen_urls: list[str] = []
+    monkeypatch.setenv("STOOQ_API_KEY", "unit-test-key")
+
+    def fetch_text(url: str) -> str:
+        seen_urls.append(url)
+        return _raw_stooq_csv((100.0, 101.0))
+
+    cache_stooq_daily_csv(
+        asset_id="SPY.US",
+        start="2024-01-01",
+        end="2024-01-05",
+        cache_dir=tmp_path,
+        fetch_text=fetch_text,
+    )
+
+    assert seen_urls == [
+        "https://stooq.com/q/d/l/?s=spy.us&i=d&d1=20240101&d2=20240105"
+        "&apikey=unit-test-key"
+    ]
+
+
 def test_stooq_normalizer_can_read_cached_raw_files(tmp_path: Path) -> None:
     from qts.stooq import StooqHistoricalDataSource, write_stooq_normalized_csv_from_files
 

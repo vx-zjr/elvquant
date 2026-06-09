@@ -10,6 +10,9 @@
 - Added the next implementation target: cache Stooq daily CSV, normalize it to
   the existing historical CSV shape, and run equal-weight versus momentum
   research on local normalized data.
+- Stooq scripted downloads in this environment now require either a provider
+  `apikey` or manual browser download. Core supports optional `STOOQ_API_KEY`
+  without committing secret values.
 
 ## Current Focus
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import urllib.request
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
@@ -38,6 +39,7 @@ FetchText = Callable[[str], str]
 _STOOQ_DOWNLOAD_BASE_URL = "https://stooq.com/q/d/l/"
 _STOOQ_REQUIRED_COLUMNS = {"Date", "Close"}
 _DEFAULT_STOOQ_ASSETS = ("SPY.US", "QQQ.US", "IWM.US", "TLT.US", "GLD.US")
+_STOOQ_API_KEY_ENV_VAR = "STOOQ_API_KEY"
 
 
 @dataclass(frozen=True)
@@ -103,17 +105,23 @@ class StooqResearchConfig:
         }
 
 
-def stooq_daily_csv_url(asset_id: str, start: str, end: str) -> str:
+def stooq_daily_csv_url(
+    asset_id: str,
+    start: str,
+    end: str,
+    api_key: str | None = None,
+) -> str:
     """Return the Stooq daily CSV URL for one asset and inclusive date range."""
 
-    query = urlencode(
-        {
-            "s": asset_id.lower(),
-            "i": "d",
-            "d1": start.replace("-", ""),
-            "d2": end.replace("-", ""),
-        }
-    )
+    params = {
+        "s": asset_id.lower(),
+        "i": "d",
+        "d1": start.replace("-", ""),
+        "d2": end.replace("-", ""),
+    }
+    if api_key:
+        params["apikey"] = api_key
+    query = urlencode(params)
     return f"{_STOOQ_DOWNLOAD_BASE_URL}?{query}"
 
 
@@ -123,11 +131,17 @@ def cache_stooq_daily_csv(
     end: str,
     cache_dir: Path,
     fetch_text: FetchText | None = None,
+    api_key: str | None = None,
 ) -> Path:
     """Download one Stooq daily CSV into a local cache after validating CSV shape."""
 
     cache_dir.mkdir(parents=True, exist_ok=True)
-    url = stooq_daily_csv_url(asset_id, start, end)
+    url = stooq_daily_csv_url(
+        asset_id,
+        start,
+        end,
+        api_key=api_key or os.environ.get(_STOOQ_API_KEY_ENV_VAR),
+    )
     text = (fetch_text or _fetch_text)(url)
     _ensure_stooq_csv(text, asset_id)
 
