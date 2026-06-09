@@ -78,10 +78,15 @@ def current_git_commit() -> str:
         check=False,
         capture_output=True,
         text=True,
+        cwd=_core_repository_root(),
     )
     if completed.returncode != 0:
         return "unknown"
     return completed.stdout.strip() or "unknown"
+
+
+def _core_repository_root() -> Path:
+    return Path(__file__).resolve().parents[2]
 
 
 def _ledger_state_payload(state: LedgerState) -> dict[str, object]:

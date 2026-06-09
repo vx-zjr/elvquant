@@ -126,18 +126,39 @@ accounting, or live trading behavior.
 
 ## Stooq Real-Data Research
 
-The example config is commit-safe and contains no API key:
+The example config is commit-safe and contains no API key. The current local
+debug config uses `SPY.US`, `QQQ.US`, `IWM.US`, `TLT.US`, and `GLD.US` from
+2015-01-01 through 2017-11-10, matching the available public Kaggle mirror of
+Stooq-format US stocks and ETFs data.
 
 ```powershell
 .venv\Scripts\python -c "from pathlib import Path; from qts.stooq import load_stooq_research_config; print(load_stooq_research_config(Path('configs/stooq_etf_momentum.example.toml')))"
 ```
 
 Prepare normalized local CSV before research. Runtime snapshots must read only
-the local normalized file:
+the local normalized file. The easiest local-debug path is:
+
+```powershell
+.venv\Scripts\python -m pip install -e ".[data]"
+.venv\Scripts\python scripts\prepare_kaggle_stooq_debug_data.py
+.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import load_stooq_research_config, run_stooq_etf_momentum_research; print(run_stooq_etf_momentum_research(load_stooq_research_config(Path('configs/stooq_etf_momentum.example.toml'))).text)"
+```
+
+This writes local, gitignored files:
+
+- `data/raw/stooq/*_2015-01-01_2017-11-10.csv`
+- `data/processed/stooq_etf_eod.csv`
+
+Data source: `https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs`.
+The data is Stooq-format daily OHLCV text. It is suitable for local debugging
+and first research plumbing, not for production trading decisions.
+
+Official Stooq direct downloads remain supported as a separate preparation
+path:
 
 ```powershell
 $env:STOOQ_API_KEY="<optional local key, never commit>"
-.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import cache_stooq_daily_csv; print(cache_stooq_daily_csv('SPY.US','2015-01-01','2025-12-31',Path('data/raw/stooq')))"
+.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import cache_stooq_daily_csv; print(cache_stooq_daily_csv('SPY.US','2015-01-01','2017-11-10',Path('data/raw/stooq')))"
 ```
 
 If Stooq returns a browser verification page or an API-key instruction page
@@ -147,8 +168,9 @@ Stooq's account/download flow if you are allowed to use it, keep it in
 raw CSV, or switch to the next documented provider task. Never treat HTML as
 market data.
 
-After raw CSV files are available, normalize them into
-`data/processed/stooq_etf_eod.csv` with `write_stooq_normalized_csv`, then run:
+If raw CSV files are manually available, normalize them into
+`data/processed/stooq_etf_eod.csv` with `write_stooq_normalized_csv_from_files`,
+then run:
 
 ```powershell
 @'
@@ -157,7 +179,7 @@ from qts.stooq import stooq_daily_csv_url, write_stooq_normalized_csv_from_files
 
 assets = ("SPY.US", "QQQ.US", "IWM.US", "TLT.US", "GLD.US")
 start = "2015-01-01"
-end = "2025-12-31"
+end = "2017-11-10"
 raw_paths = {
     asset: Path("data/raw/stooq") / f"{asset.lower().replace('.', '_')}_{start}_{end}.csv"
     for asset in assets

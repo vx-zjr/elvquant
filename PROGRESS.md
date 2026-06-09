@@ -13,6 +13,10 @@
 - Stooq scripted downloads in this environment now require either a provider
   `apikey` or manual browser download. Core supports optional `STOOQ_API_KEY`
   without committing secret values.
+- Local Stooq-format debugging is unblocked through the public Kaggle mirror:
+  raw ETF files were filtered into `data/raw/stooq/`, normalized into
+  `data/processed/stooq_etf_eod.csv`, and used to generate a real-data
+  momentum-vs-equal-weight report.
 
 ## Current Focus
 

@@ -138,26 +138,51 @@
 
 - Task: Real-data provider v1
 - Config: `configs/stooq_etf_momentum.example.toml`
-- Provider: Stooq EOD, normalized local CSV
+- Provider: Stooq-format EOD, normalized local CSV
 - Intended universe: `SPY.US`, `QQQ.US`, `IWM.US`, `TLT.US`, `GLD.US`
-- Intended data range: 2015-01-01 through 2025-12-31
+- Current local-debug data range: 2015-01-01 through 2017-11-10
+- Local-debug source:
+  `https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs`
 - Sample split:
-  - train: 2015-01-01 to 2022-01-01
-  - validation: 2022-01-01 to 2024-01-01
-  - test: 2024-01-01 to 2025-12-31
+  - train: 2015-01-01 to 2016-01-01
+  - validation: 2016-01-01 to 2017-01-01
+  - test: 2017-01-01 to 2017-11-10
 - Strategy: `MomentumSignal` versus `EqualWeightSignal`
 - Costs:
   - fixed commission: 1.0 per non-zero order
   - proportional commission: 0.0005 of absolute traded notional
   - slippage: 0.001 of absolute traded notional
-- Report path when local data exists:
-  `reports/stooq-etf-momentum-20150101-20251231/`
+- Report path:
+  `reports/stooq-etf-momentum-20150101-20171110/`
 - Observation: Stooq direct scripted requests can return a browser verification
   page or an API-key instruction page in this environment. The downloader
-  rejects non-CSV responses and supports optional `STOOQ_API_KEY` for local
-  runtime downloads. Full research should be run after valid Stooq CSV files
-  are cached or manually downloaded into `data/raw/stooq/` and normalized into
-  `data/processed/stooq_etf_eod.csv`.
+  rejects non-CSV responses and supports optional `STOOQ_API_KEY` for official
+  downloads. The Kaggle mirror allowed local debugging to proceed without a
+  Stooq apikey, but the mirror is stale and should not be used for current
+  market conclusions.
+
+## 2026-06-09 Stooq-Format ETF Local Debug Run
+
+- Task: Real-data local debug
+- Command: `.venv\Scripts\python scripts\prepare_kaggle_stooq_debug_data.py`, then `.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import load_stooq_research_config, run_stooq_etf_momentum_research; print(run_stooq_etf_momentum_research(load_stooq_research_config(Path('configs/stooq_etf_momentum.example.toml'))).text)"`
+- run_id: `stooq-etf-momentum-20150101-20171110`
+- Data version: `kaggle-stooq-etf-eod-2015-01-01-2017-11-10-v1`
+- Data file hash: `87796dd0b69c`
+- Config hash: `19d07d3a0a40`
+- Decisions:
+  - train: 183
+  - validation: 199
+  - test: 172
+- Test segment metrics:
+  - equal_weight_total_return: 0.039263
+  - momentum_total_return: -0.007580
+  - momentum_minus_equal_weight_return: -0.046843
+  - momentum_max_drawdown: -0.070004
+  - momentum_turnover: 81.142790
+  - momentum_total_cost: 1430.141853
+- Observation: The existing 20-observation top-1 momentum rule under the
+  current cost assumptions did not beat equal weight in the 2017 sample-out
+  segment. This is useful pipeline evidence, not an investment conclusion.
 
 ## 2026-06-09 Live Readiness Review
 

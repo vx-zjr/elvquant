@@ -254,18 +254,22 @@ Consequences:
 
 Date: 2026-06-09
 
-Decision: Add Stooq EOD as the first real-data provider path, but keep runtime
-research on normalized local CSV behind the `DataSource` contract.
+Decision: Add Stooq-format EOD as the first real-data provider path, but keep
+runtime research on normalized local CSV behind the `DataSource` contract.
+Official Stooq direct downloads remain supported; local debugging currently
+uses the public Kaggle mirror of Stooq-format US stock and ETF files.
 
 Rationale: The next useful step is proving the research pipeline can consume a
 longer true historical price series without adding broker APIs or live feeds.
-Stooq is the lowest-friction first provider, but scripted CSV downloads may
-require a provider `apikey`; if so, it is supplied only through local runtime
-environment such as `STOOQ_API_KEY`.
+Stooq is the intended first provider shape, but scripted CSV downloads may
+require a provider `apikey`; the Kaggle mirror unblocks local testing without
+committing secrets.
 
 Consequences:
 - Stooq download is a preparation step and may fail if the site returns browser
   verification HTML or an API-key instruction page.
+- The local debug config is limited to 2015-01-01 through 2017-11-10 because
+  that is the available range in the public mirror for the chosen ETF universe.
 - `StooqHistoricalDataSource` wraps the normalized CSV reader with
   `ValidatedDataSource`.
 - Research reports record config hash, data file hash, data version, sample

@@ -1,10 +1,12 @@
-# Commit-safe Stooq ETF momentum research example.
-# Stooq v1 does not require secrets. Do not put API keys in this file.
+# Commit-safe Stooq-format ETF momentum research example.
+# The local debug dataset can be prepared from the public Kaggle mirror:
+# borismarjanovic/price-volume-data-for-all-us-stocks-etfs.
+# Do not put API keys or credentials in this file.
 
 provider = "stooq"
 asset_ids = ["SPY.US", "QQQ.US", "IWM.US", "TLT.US", "GLD.US"]
 start = "2015-01-01"
-end = "2025-12-31"
+end = "2017-11-10"
 strategy = "momentum_vs_equal_weight"
 seed = "stooq-etf-momentum-v1"
 
@@ -12,11 +14,11 @@ seed = "stooq-etf-momentum-v1"
 data_path = "data/processed/stooq_etf_eod.csv"
 reports_dir = "reports"
 train_start = "2015-01-01"
-train_end = "2022-01-01"
-validation_start = "2022-01-01"
-validation_end = "2024-01-01"
-test_start = "2024-01-01"
-test_end = "2025-12-31"
+train_end = "2016-01-01"
+validation_start = "2016-01-01"
+validation_end = "2017-01-01"
+test_start = "2017-01-01"
+test_end = "2017-11-10"
 lookback_observations = 20
 top_n = 1
 initial_cash = 10000.0

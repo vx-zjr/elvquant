@@ -4,15 +4,17 @@
 
 Date: 2026-06-09
 
-Decision: The first real-data provider is Stooq EOD daily data, cached and
-normalized into local CSV before research runs. Stooq is used only as a
-read-only historical data source.
+Decision: The first real-data provider path is Stooq-format EOD daily data,
+cached and normalized into local CSV before research runs. Official Stooq
+downloads remain supported, while local debugging currently uses the public
+Kaggle mirror `borismarjanovic/price-volume-data-for-all-us-stocks-etfs` to
+avoid blocking on Stooq's apikey/captcha flow.
 
 Rationale: The immediate goal is to prove the core can ingest real historical
-market data without broker access or UI business logic. Stooq is still the
-lowest-friction provider for program testing, but scripted downloads may require
-a provider `apikey`; that value is a secret and must stay outside committed
-configuration.
+market data without broker access or UI business logic. Official Stooq scripted
+downloads may require a provider `apikey`; the Kaggle mirror supplies
+Stooq-format historical OHLCV files with no project secret, which unblocks
+local research workflow testing.
 
 Boundaries:
 
@@ -20,6 +22,9 @@ Boundaries:
 - No live or intraday feed.
 - No secret value in committed Stooq config; optional `STOOQ_API_KEY` may be
   supplied only through the local runtime environment.
+- Kaggle mirror data is for local debugging and first research plumbing only;
+  it is not current-market data and currently ends at 2017-11-10 for the chosen
+  ETF universe.
 - No React frontend work until research output justifies it.
 - Runtime `DataSource.snapshot()` reads only local normalized CSV and must not
   perform network access.

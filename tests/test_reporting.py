@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from qts.contracts import BacktestResult, LedgerState
 
@@ -15,6 +17,29 @@ def test_config_hash_is_stable_independent_of_key_order() -> None:
 
     assert left == right
     assert len(left) == 12
+
+
+def test_current_git_commit_uses_core_repository_root(
+    monkeypatch: Any,
+) -> None:
+    from qts import reporting
+
+    calls: list[dict[str, object]] = []
+
+    def fake_run(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        calls.append({"args": args, "kwargs": kwargs})
+        return subprocess.CompletedProcess(
+            args=args,
+            returncode=0,
+            stdout="core123\n",
+            stderr="",
+        )
+
+    monkeypatch.setattr(reporting.subprocess, "run", fake_run)
+
+    assert reporting.current_git_commit() == "core123"
+    assert calls
+    assert calls[0]["kwargs"]["cwd"] == Path(reporting.__file__).resolve().parents[2]
 
 
 def test_write_experiment_report_files_include_required_metadata(tmp_path: Path) -> None:

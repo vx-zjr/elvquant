@@ -4,7 +4,10 @@
 
 Phase 2 includes `SyntheticDataSource`, a deterministic fake price source used
 only for testing the pipeline shape. Phase 4 introduces a read-only CSV
-historical data source backed by a small fixed FRED sample.
+historical data source backed by a small fixed FRED sample. The current Stooq
+local-debug path uses a public Kaggle mirror of Stooq-format US stocks and ETFs
+text files, filtered to `SPY.US`, `QQQ.US`, `IWM.US`, `TLT.US`, and `GLD.US`
+from 2015-01-01 through 2017-11-10.
 
 ## Rules
 
@@ -59,6 +62,13 @@ historical data source backed by a small fixed FRED sample.
 
 - Source name: `StooqHistoricalDataSource`.
 - Intended universe: `SPY.US`, `QQQ.US`, `IWM.US`, `TLT.US`, `GLD.US`.
+- Local debug source URL:
+  `https://www.kaggle.com/datasets/borismarjanovic/price-volume-data-for-all-us-stocks-etfs`.
+- Local debug data version:
+  `kaggle-stooq-etf-eod-2015-01-01-2017-11-10-v1`.
+- Local debug limitation: the public Kaggle mirror currently ends at
+  2017-11-10 for this universe. It is enough to test ingestion, validation, and
+  research plumbing, but not enough for current-market conclusions.
 - Stooq v1 keeps secrets out of committed configuration. If Stooq requires an
   `apikey` for scripted CSV downloads, provide it through `STOOQ_API_KEY` or a
   gitignored `.env`; never commit it to config or reports.
