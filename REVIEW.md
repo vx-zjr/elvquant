@@ -48,3 +48,12 @@ Before completing any task, verify:
 - Kill switch, order amount limits, alert logging, traceability, recovery,
   human confirmation records, and paper observation controls exist without
   broker integration.
+
+## Phase 12 Review
+
+- Manual order workflow defaults to dry-run and rejects real broker submission.
+- Risk rejection prevents manual submit.
+- Kill switch prevents manual submit.
+- Human confirmation is required before local order recording.
+- Manual order records include source strategy, signal, target weights, risk
+  result, confirmer, confirmation time, and `broker_submission: disabled`.

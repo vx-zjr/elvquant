@@ -9,16 +9,17 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Readiness blockers have been remediated with non-broker controls. The next task
-is Phase 12: implement a manual-confirmation order workflow that defaults to
-dry-run and still has no broker integration.
+The document-defined business plan is complete through Phase 12. The system can
+generate traceable manual order recommendations, enforce risk and kill-switch
+controls, require human confirmation, and record dry-run order submissions
+locally. Broker integration and real-money order submission remain disabled.
 
 ## Explicit Non-Goals
 
-- No real market data.
+- No live market data feed.
 - No live broker connection.
 - No live trading or real-money order submission.
-- No ML or AI-driven signal generation.
+- No ML or AI-driven live trading.
 - No production strategy implementation.
 - No broker data source implementation.
 - No secrets, API keys, account identifiers, or passwords in code or docs.

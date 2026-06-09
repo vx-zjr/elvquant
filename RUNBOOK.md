@@ -124,10 +124,33 @@ Windows:
 Current status can be regenerated from the declared controls. Broker integration
 and real order submission remain out of scope.
 
+## Manual Confirmation Dry Run
+
+Use `ManualOrderWorkflow` from `qts.manual` to record a manually confirmed order
+recommendation locally. The workflow requires:
+
+- a prior `RiskDecision` with `allowed=True`
+- a `ManualConfirmation` with `decision="approved"`
+- a disabled kill switch
+- `dry_run=True`
+
+Minimal Windows example:
+
+```powershell
+.venv\Scripts\python -c "from datetime import UTC, datetime; from pathlib import Path; from qts.contracts import Order, RiskDecision; from qts.manual import ManualConfirmation, ManualOrderWorkflow, OrderRecommendation; as_of=datetime(2026,1,1,tzinfo=UTC); rec=OrderRecommendation(order_id='manual-demo-1', order=Order(as_of=as_of, asset_id='AAA', quantity=1.0, reason='demo'), source_strategy='demo-strategy', signal={'AAA':1.0}, target_weights={'AAA':0.1}, risk_decision=RiskDecision(as_of=as_of, allowed=True, reasons=())); conf=ManualConfirmation(confirmed_by='operator', confirmed_at=as_of, decision='approved', notes='dry run only'); print(ManualOrderWorkflow(output_dir=Path('paper_runs/manual-demo')).submit(rec, conf))"
+```
+
+This writes `manual_orders.jsonl` and always records
+`broker_submission: disabled`.
+
 ## Emergency Stop
 
 Use `KillSwitch(enabled=True, reason="...")` from `qts.controls` in any manual
 or paper workflow. A raised kill-switch error must stop submission attempts.
+
+Manual dry-run workflows should be stopped by enabling the kill switch and by
+not creating new confirmation records. No background daemon or broker session is
+started by this project.
 
 ## Troubleshooting
 
@@ -140,4 +163,6 @@ or paper workflow. A raised kill-switch error must stop submission attempts.
 
 ## Stop Procedure
 
-No long-running service exists in Phase 0.
+No long-running service exists. Stop by not invoking the next paper or manual
+run, and enable the kill switch before any review session that should reject
+submissions.

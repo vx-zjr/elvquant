@@ -210,3 +210,21 @@ Consequences:
 - Readiness report now shows no blockers.
 - Phase 12 may implement dry-run manual confirmation only.
 - Broker clients and secrets remain out of scope.
+
+## ADR-013: Keep Manual Orders Dry-Run Only
+
+Date: 2026-06-09
+
+Decision: Phase 12 records manually confirmed order recommendations as local
+dry-run JSONL records and rejects any attempt to instantiate the workflow for
+real broker submission.
+
+Rationale: Manual review, risk approval, traceability, and emergency stop
+behavior can be validated without adding broker clients, API keys, or live
+order routing.
+
+Consequences:
+- `ManualOrderWorkflow` requires risk approval and human confirmation before
+  writing a record.
+- Kill-switch state blocks manual submit attempts.
+- Broker submission remains `"disabled"` in every manual order record.

@@ -8,15 +8,20 @@ can be handed to a new agent through repository documents alone.
 
 ## Current Scope
 
-Phase 0 creates the project scaffold only:
+The document-defined business plan is complete through Phase 12:
 
 - Python package structure under `src/qts`
 - pytest, Ruff, and mypy configuration
 - required project governance documents
 - CircleCI configuration for the same local quality gates
+- deterministic synthetic backtests
+- fixed historical CSV smoke data
+- rule-based momentum and deterministic ML-style research signals
+- explicit cost, risk, reporting, readiness, and local paper-trading controls
+- manual-confirmation dry-run order recording
 
-No market data, strategy, backtest loop, live trading, broker integration, or ML
-logic exists in this phase.
+The project still has no broker integration, no live market data feed, no stored
+secrets, and no real-money order submission path.
 
 ## Setup
 

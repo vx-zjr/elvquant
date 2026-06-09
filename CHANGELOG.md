@@ -2,6 +2,9 @@
 
 ## 2026-06-09
 
+- Added a manual-confirmation dry-run order workflow that enforces kill switch,
+  risk approval, and human confirmation before writing traceable local order
+  records with broker submission disabled.
 - Added non-broker readiness controls: kill switch, order amount limits, local
   confirmation records, and readiness controls.
 - Updated readiness report to ready after blocker remediation, while keeping

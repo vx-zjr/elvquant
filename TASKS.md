@@ -506,7 +506,7 @@ Agent instructions:
 
 ## Task ID: QTS-013
 
-Status: Pending
+Status: Completed
 Phase: 12
 Title: Add manual-confirmation dry-run order workflow
 
@@ -543,3 +543,9 @@ Agent instructions:
 - Write failing manual-confirmation tests before implementation.
 - Keep broker submission disabled by default.
 - Do not add real broker clients or secrets.
+
+Completion note:
+- All tasks defined in the source plan are complete.
+- Future work must start as a new documented task and must not enable broker
+  submission without explicit new scope, tests, risk review, and secret
+  management design.
