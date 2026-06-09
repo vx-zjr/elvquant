@@ -12,6 +12,29 @@ def test_example_config_loads_without_secrets() -> None:
     assert not any("secret" in key or "token" in key for key in config.as_summary())
 
 
+def test_stooq_research_config_loads_without_secrets() -> None:
+    from qts.config import load_core_config
+
+    config = load_core_config(Path("configs/stooq_etf_momentum.example.toml"))
+
+    assert config.provider == "stooq"
+    assert config.asset_ids == ("SPY.US", "QQQ.US", "IWM.US", "TLT.US", "GLD.US")
+    assert config.strategy == "momentum_vs_equal_weight"
+    assert config.as_summary()["parameter.lookback_observations"] == "20"
+    assert not any("secret" in key or "token" in key for key in config.as_summary())
+
+
+def test_stooq_typed_research_config_loads_from_example() -> None:
+    from qts.stooq import load_stooq_research_config
+
+    config = load_stooq_research_config(Path("configs/stooq_etf_momentum.example.toml"))
+
+    assert config.asset_ids == ("SPY.US", "QQQ.US", "IWM.US", "TLT.US", "GLD.US")
+    assert config.data_path == Path("data/processed/stooq_etf_eod.csv")
+    assert config.lookback_observations == 20
+    assert config.fixed_commission == 1.0
+
+
 def test_config_rejects_secret_like_keys(tmp_path) -> None:
     from qts.config import load_core_config
 

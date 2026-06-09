@@ -78,6 +78,22 @@ Historical CSV support lives in `src/qts/historical.py`:
 The historical data source is read-only and does not change strategy, risk,
 execution, accounting, or `SimpleBacktester` behavior.
 
+## Real-Data Provider Location
+
+Stooq EOD ingestion and research helpers live in `src/qts/stooq.py`:
+
+- `cache_stooq_daily_csv` downloads one raw daily CSV into `data/raw/stooq/`.
+- `write_stooq_normalized_csv_from_files` converts cached raw CSV files into
+  the normalized historical CSV shape.
+- `StooqHistoricalDataSource` reads only normalized local CSV and wraps the
+  result with `ValidatedDataSource`.
+- `run_stooq_etf_momentum_research` compares equal weight and momentum across
+  train, validation, and test sample splits.
+
+The Stooq provider does not introduce secrets, broker access, live data, or UI
+business logic. Scripted downloads are outside `DataSource.snapshot()` and must
+fail if Stooq returns HTML instead of CSV.
+
 ## Phase 5 Strategy Location
 
 Research strategies and strategy comparisons live in `src/qts/strategies.py`:

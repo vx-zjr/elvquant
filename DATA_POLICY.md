@@ -55,6 +55,29 @@ historical data source backed by a small fixed FRED sample.
   source may load the file into memory, but callers only receive the requested
   decision-time prices.
 
+## Stooq EOD Rules
+
+- Source name: `StooqHistoricalDataSource`.
+- Intended universe: `SPY.US`, `QQQ.US`, `IWM.US`, `TLT.US`, `GLD.US`.
+- Stooq v1 requires no project secret or API token.
+- Stooq downloads are a data-preparation step. Runtime `snapshot()` calls read
+  only normalized local CSV and must not access the network.
+- Raw Stooq daily CSV fields used by the normalizer: `Date` and `Close`.
+- Normalized fields: `date`, `asset_id`, `close`, `source`, `source_url`,
+  `data_version`.
+- Time zone: normalized dates are interpreted as UTC midnight decision
+  timestamps.
+- Adjustment rule: v1 records the Stooq `Close` field as delivered. The report
+  must state this limitation before using results as investment evidence.
+- Missing values, non-CSV responses, non-positive closes, missing dates, missing
+  assets, and empty `data_version` values are invalid and must fail explicitly.
+- Visibility: Stooq data is consumed through `StooqHistoricalDataSource`, which
+  wraps the normalized CSV source with `ValidatedDataSource`.
+- Network caveat: Stooq may return a browser verification page to scripted
+  requests. Such responses must not be cached as data; the downloader must fail
+  with a clear error so the operator can retry or provide a manually downloaded
+  CSV.
+
 ## Derived Feature Rules
 
 - `TrailingReturnFeatureDataSource` may derive trailing-return features from
@@ -86,6 +109,10 @@ run reports. It may include provider names, asset IDs, strategy parameters, risk
 parameters, dates, and seeds. Secret values belong in environment variables,
 gitignored `.env` files, or a secret manager, and must not be copied into
 reports.
+
+The Stooq example config is commit-safe and uses no secrets. Future providers
+that require tokens must document only environment variable names in
+`.env.example`; real values must remain outside git.
 
 ## Execution and Cost Assumptions
 

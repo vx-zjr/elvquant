@@ -572,3 +572,36 @@ Acceptance criteria:
 - `pytest` passes.
 - `ruff check` passes.
 - `mypy` passes.
+
+## Task ID: QTS-015
+
+Status: Completed
+Phase: Real data research
+Title: Add Stooq EOD local-cache research workflow
+
+Scope:
+- Add one real historical data source path behind the existing `DataSource`
+  boundary.
+- Cache raw Stooq CSV outside tracked source data.
+- Normalize Stooq daily CSV into the existing historical CSV shape.
+- Keep runtime snapshots local-only and validated by `ValidatedDataSource`.
+- Add a commit-safe Stooq ETF momentum configuration.
+- Compare momentum with equal weight across train, validation, and test splits.
+- Do not add broker APIs, live data streams, React UI work, or secrets.
+
+Acceptance criteria:
+- Stooq normalized CSV can return visible snapshots.
+- Runtime snapshots do not download data.
+- Non-CSV Stooq responses are rejected.
+- Non-positive closes fail explicitly.
+- Stooq typed config loads without secrets.
+- Research reports include config hash, data file hash, data version, sample
+  splits, and costs.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Completion note:
+- Scripted Stooq downloads may return browser verification HTML in this
+  environment. The downloader rejects those responses; full research should run
+  once valid raw Stooq CSV files are cached or manually downloaded.

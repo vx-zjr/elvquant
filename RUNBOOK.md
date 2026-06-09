@@ -124,6 +124,56 @@ Windows:
 This is a research comparison only and does not alter risk, execution,
 accounting, or live trading behavior.
 
+## Stooq Real-Data Research
+
+Stooq v1 uses no API key. The example config is commit-safe:
+
+```powershell
+.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import load_stooq_research_config; print(load_stooq_research_config(Path('configs/stooq_etf_momentum.example.toml')))"
+```
+
+Prepare normalized local CSV before research. Runtime snapshots must read only
+the local normalized file:
+
+```powershell
+.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import cache_stooq_daily_csv; print(cache_stooq_daily_csv('SPY.US','2015-01-01','2025-12-31',Path('data/raw/stooq')))"
+```
+
+If Stooq returns a browser verification page instead of CSV, the downloader will
+fail intentionally. Retry later, use a browser/manual download for the raw CSV,
+or switch to the next documented provider task. Never treat HTML as market data.
+
+After raw CSV files are available, normalize them into
+`data/processed/stooq_etf_eod.csv` with `write_stooq_normalized_csv`, then run:
+
+```powershell
+@'
+from pathlib import Path
+from qts.stooq import stooq_daily_csv_url, write_stooq_normalized_csv_from_files
+
+assets = ("SPY.US", "QQQ.US", "IWM.US", "TLT.US", "GLD.US")
+start = "2015-01-01"
+end = "2025-12-31"
+raw_paths = {
+    asset: Path("data/raw/stooq") / f"{asset.lower().replace('.', '_')}_{start}_{end}.csv"
+    for asset in assets
+}
+source_urls = {asset: stooq_daily_csv_url(asset, start, end) for asset in assets}
+write_stooq_normalized_csv_from_files(
+    raw_paths_by_asset=raw_paths,
+    output_path=Path("data/processed/stooq_etf_eod.csv"),
+    data_version=f"stooq-etf-eod-{start}-{end}-v1",
+    source_urls=source_urls,
+)
+'@ | .venv\Scripts\python -
+
+.venv\Scripts\python -c "from pathlib import Path; from qts.stooq import load_stooq_research_config, run_stooq_etf_momentum_research; print(run_stooq_etf_momentum_research(load_stooq_research_config(Path('configs/stooq_etf_momentum.example.toml'))).text)"
+```
+
+The Stooq research report records config hash, data file hash, data version,
+sample splits, and cost assumptions. It is still research-only and not trading
+advice.
+
 ## Live Readiness Review
 
 Windows:

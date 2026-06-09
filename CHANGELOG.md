@@ -2,6 +2,13 @@
 
 ## 2026-06-09
 
+- Added Stooq EOD local-cache ingestion helpers and a validated
+  `StooqHistoricalDataSource`.
+- Added Stooq ETF momentum versus equal-weight research runner with config hash,
+  data file hash, data version, sample splits, and cost assumptions in reports.
+- Added commit-safe Stooq example configuration plus `AGDR.md` and
+  `PROGRESS.md`.
+- Documented Stooq provider policy, review requirements, and runbook workflow.
 - Reframed the repository as `elvquant_core`, added core/UI boundary rules,
   commit-safe configuration loading, and provider visibility validation.
 - Added the original quantitative trading agent development plan as a UTF-8

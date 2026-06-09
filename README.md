@@ -18,6 +18,7 @@ repository now serves as the reusable core behind replaceable clients such as
 - CircleCI configuration for the same local quality gates
 - deterministic synthetic backtests
 - fixed historical CSV smoke data
+- Stooq EOD local-cache normalization for the first real-data research workflow
 - rule-based momentum and deterministic ML-style research signals
 - explicit cost, risk, reporting, readiness, and local paper-trading controls
 - manual-confirmation dry-run order recording

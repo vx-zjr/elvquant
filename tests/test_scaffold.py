@@ -13,6 +13,8 @@ REQUIRED_DOCS = {
     "EXPERIMENTS.md",
     "CHANGELOG.md",
     "CORE_BOUNDARY.md",
+    "AGDR.md",
+    "PROGRESS.md",
 }
 
 

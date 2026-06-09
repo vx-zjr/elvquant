@@ -134,6 +134,30 @@
 - Observation: The ML-style model is deterministic and slightly higher on this
   tiny sample. This is not sufficient evidence for live trading.
 
+## 2026-06-09 Stooq Real-Data Workflow Implementation
+
+- Task: Real-data provider v1
+- Config: `configs/stooq_etf_momentum.example.toml`
+- Provider: Stooq EOD, normalized local CSV
+- Intended universe: `SPY.US`, `QQQ.US`, `IWM.US`, `TLT.US`, `GLD.US`
+- Intended data range: 2015-01-01 through 2025-12-31
+- Sample split:
+  - train: 2015-01-01 to 2022-01-01
+  - validation: 2022-01-01 to 2024-01-01
+  - test: 2024-01-01 to 2025-12-31
+- Strategy: `MomentumSignal` versus `EqualWeightSignal`
+- Costs:
+  - fixed commission: 1.0 per non-zero order
+  - proportional commission: 0.0005 of absolute traded notional
+  - slippage: 0.001 of absolute traded notional
+- Report path when local data exists:
+  `reports/stooq-etf-momentum-20150101-20251231/`
+- Observation: Stooq direct scripted requests can return a browser verification
+  page in this environment. The downloader rejects non-CSV responses. Full
+  research should be run after valid Stooq CSV files are cached or manually
+  downloaded into `data/raw/stooq/` and normalized into
+  `data/processed/stooq_etf_eod.csv`.
+
 ## 2026-06-09 Live Readiness Review
 
 - Task: QTS-011

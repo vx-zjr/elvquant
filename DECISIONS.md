@@ -249,3 +249,24 @@ Consequences:
 - Commit-safe config and secret values are handled as separate concepts.
 - Real provider work starts with one concrete provider plus existing synthetic
   and CSV stubs, not a fleet of unused adapters.
+
+## ADR-015: Add Stooq As The First Real-Data Research Provider
+
+Date: 2026-06-09
+
+Decision: Add Stooq EOD as the first real-data provider path, but keep runtime
+research on normalized local CSV behind the `DataSource` contract.
+
+Rationale: The next useful step is proving the research pipeline can consume a
+longer true historical price series without adding broker APIs, live feeds, or
+secrets. Stooq is the lowest-friction first provider because v1 does not need an
+API token.
+
+Consequences:
+- Stooq download is a preparation step and may fail if the site returns browser
+  verification HTML.
+- `StooqHistoricalDataSource` wraps the normalized CSV reader with
+  `ValidatedDataSource`.
+- Research reports record config hash, data file hash, data version, sample
+  split, and cost assumptions.
+- React UI remains deferred until research output justifies a richer client.

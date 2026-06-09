@@ -57,3 +57,21 @@ Before completing any task, verify:
 - Human confirmation is required before local order recording.
 - Manual order records include source strategy, signal, target weights, risk
   result, confirmer, confirmation time, and `broker_submission: disabled`.
+
+## Real Data Provider Review
+
+- Real provider data is cached or normalized before research runs.
+- Runtime `DataSource.snapshot()` does not use the network.
+- Provider output is wrapped by `ValidatedDataSource` or an equivalent boundary
+  check.
+- Non-CSV provider responses, missing dates, missing assets, empty data
+  versions, and non-positive prices fail explicitly.
+- Committed configs contain provider, universe, sample split, strategy
+  parameters, costs, dates, and seed only.
+- Secret-like config keys remain rejected, and no real token or account value is
+  committed.
+- Reports include config hash, data file hash, data version, sample splits, cost
+  assumptions, and a note on provider limitations.
+- Real-data research reruns honesty probes before completion.
+- Any provider limitation that affects interpretation is recorded in
+  `EXPERIMENTS.md`, `DECISIONS.md`, `PROGRESS.md`, or `AGDR.md`.
