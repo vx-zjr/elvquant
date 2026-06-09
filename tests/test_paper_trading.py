@@ -85,3 +85,18 @@ def test_paper_trading_failure_is_logged(tmp_path):
     failures = (tmp_path / "failures.jsonl").read_text(encoding="utf-8").splitlines()
     assert len(failures) == 1
     assert "failed" in json.loads(failures[0])["status"]
+
+
+def test_synthetic_paper_demo_runner_returns_report_and_artifacts(tmp_path):
+    from qts.paper import run_synthetic_paper_demo
+
+    report = run_synthetic_paper_demo(output_dir=tmp_path)
+
+    assert report.run_id == "paper-synthetic-20260101-20260105"
+    assert report.metrics["ending_equity"] > 10_000.0
+    assert report.metrics["total_orders"] == 10.0
+    assert report.metrics["risk_rejections"] == 0.0
+    assert (tmp_path / "orders.jsonl").is_file()
+    assert (tmp_path / "daily_reports" / "2026-01-05.md").is_file()
+    assert "broker_submission: disabled" in report.text
+    assert "| 2026-01-05 |" in report.text

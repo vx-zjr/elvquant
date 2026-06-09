@@ -16,10 +16,19 @@ from qts.contracts import (
     LedgerState,
     Order,
     PortfolioConstructor,
+    Report,
     RiskDecision,
     RiskManager,
     SignalModel,
     TargetPortfolio,
+)
+from qts.simple import (
+    BasicRiskManager,
+    EqualWeightSignal,
+    SimpleAccountingLedger,
+    SimpleExecutionSimulator,
+    SimplePortfolioConstructor,
+    SyntheticDataSource,
 )
 
 _EPSILON = 1e-9
@@ -182,6 +191,26 @@ class PaperTradingEngine:
         return path
 
 
+def run_synthetic_paper_demo(output_dir: Path | None = None) -> Report:
+    """Run a deterministic local paper-trading demo without broker connectivity."""
+
+    from datetime import UTC, timedelta
+
+    start = datetime(2026, 1, 1, tzinfo=UTC)
+    run_output_dir = output_dir or Path("paper_runs/synthetic-paper-demo")
+    engine = PaperTradingEngine(
+        data_source=SyntheticDataSource(asset_ids=("AAA", "BBB"), start=start, periods=6),
+        signal_model=EqualWeightSignal(),
+        portfolio_constructor=SimplePortfolioConstructor(),
+        risk_manager=BasicRiskManager(),
+        execution_simulator=SimpleExecutionSimulator(cost_rate=0.001),
+        ledger=SimpleAccountingLedger(),
+        config=PaperTradingConfig(output_dir=run_output_dir, initial_cash=10_000.0),
+    )
+    results = engine.run_days(tuple(start + timedelta(days=offset) for offset in range(5)))
+    return _build_paper_report(results, run_output_dir)
+
+
 def _orders_for_target(
     state: LedgerState,
     equity: float,
@@ -215,8 +244,59 @@ def _position_value(positions: Mapping[str, float], snapshot: DataSnapshot) -> f
     return total
 
 
+def _build_paper_report(
+    results: Sequence[PaperTradingDayResult],
+    output_dir: Path,
+) -> Report:
+    first = results[0]
+    last = results[-1]
+    initial_equity = 10_000.0
+    ending_equity = last.state.equity
+    total_orders = sum(len(result.orders) for result in results)
+    risk_rejections = sum(0 if result.risk_decision.allowed else 1 for result in results)
+    run_id = f"paper-synthetic-{first.decision_time:%Y%m%d}-{last.decision_time:%Y%m%d}"
+    order_log_path = output_dir / "orders.jsonl"
+    lines = [
+        f"run_id: {run_id}",
+        "mode: local_paper",
+        "broker_submission: disabled",
+        f"output_dir: {output_dir.resolve()}",
+        f"order_log: {order_log_path.resolve()}",
+        f"latest_daily_report: {last.daily_report_path.resolve()}",
+        f"ending_equity: {ending_equity:.6f}",
+        f"total_return: {ending_equity / initial_equity - 1.0:.6f}",
+        f"total_orders: {total_orders}",
+        f"risk_rejections: {risk_rejections}",
+        "",
+        "## Daily Results",
+        "",
+        "| date | equity | orders | risk_allowed | daily_report |",
+        "| --- | ---: | ---: | --- | --- |",
+    ]
+    lines.extend(
+        "| "
+        f"{result.decision_time:%Y-%m-%d} | "
+        f"{result.state.equity:.6f} | "
+        f"{len(result.orders)} | "
+        f"{str(result.risk_decision.allowed).lower()} | "
+        f"{result.daily_report_path.resolve()} |"
+        for result in results
+    )
+    return Report(
+        run_id=run_id,
+        text="\n".join(lines),
+        metrics={
+            "ending_equity": ending_equity,
+            "total_return": ending_equity / initial_equity - 1.0,
+            "total_orders": float(total_orders),
+            "risk_rejections": float(risk_rejections),
+        },
+    )
+
+
 __all__ = [
     "PaperTradingConfig",
     "PaperTradingDayResult",
     "PaperTradingEngine",
+    "run_synthetic_paper_demo",
 ]
