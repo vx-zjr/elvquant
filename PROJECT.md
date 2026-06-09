@@ -9,9 +9,11 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 2 is complete once the thinnest end-to-end loop runs on synthetic data
-only. The next task is Phase 3: add honesty probe tests that catch self-deception
-and low-level accounting/risk errors.
+Phase 3 is complete once honesty probe tests guard against self-deception,
+look-ahead access, accounting imbalance, negative costs, position drift, missing
+run metadata, and basic risk bypasses. The next task is Phase 4: add a read-only
+historical data source without changing strategy, backtest, risk, or accounting
+behavior.
 
 ## Explicit Non-Goals
 

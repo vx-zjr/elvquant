@@ -107,7 +107,7 @@ Agent instructions:
 
 ## Task ID: QTS-003
 
-Status: Pending
+Status: Completed
 Phase: 3
 Title: Add honesty probe tests
 
@@ -149,3 +149,43 @@ Agent instructions:
 - If interfaces cannot express a rule, update `CONTRACTS.md` and
   `DECISIONS.md` before code changes.
 - Keep the scope limited to probes and minimum fixes.
+
+## Task ID: QTS-004
+
+Status: Pending
+Phase: 4
+Title: Add read-only historical data source
+
+Scope:
+- Implement a real historical-data `DataSource`.
+- Replace only the data source for a smoke run.
+- Do not modify `SimpleBacktester`.
+- Do not modify strategies, risk, execution, or accounting behavior.
+- Do not add ML.
+- Do not connect to live broker APIs.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `DATA_POLICY.md`
+- `EXPERIMENTS.md`
+- `RUNBOOK.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- `DATA_POLICY.md` documents source, fields, timezone, adjustment, missing data,
+  and versioning before implementation.
+- A read-only historical data source can run the equal-weight strategy.
+- Honesty probes continue passing.
+- Missing data raises or is explicitly handled; no silent filling.
+- `EXPERIMENTS.md` records one real-data smoke run.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Update `DATA_POLICY.md` before code.
+- Write tests before implementation.
+- Preserve backtester, strategy, risk, execution, and accounting modules unless
+  a test proves a narrow compatibility fix is required.

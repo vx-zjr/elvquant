@@ -14,9 +14,17 @@ Before completing any task, verify:
 - Accounting behavior was not weakened.
 - The project can be run from `RUNBOOK.md`.
 - Experiment results were recorded when a backtest or paper run occurred.
+- Honesty probes were run and passed before any real data, strategy, or live
+  trading expansion.
 
 ## Phase 0 Review
 
 - No real trading logic exists.
 - Required root documents exist.
 - Quality gates are configured locally and in CircleCI.
+
+## Phase 3 Review
+
+- Honesty probes cover future-data absence, cost drag, accounting identity,
+  non-negative costs, no-trade position stability, risk rejection, and run
+  metadata.

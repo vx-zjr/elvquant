@@ -49,3 +49,20 @@ Consequences:
 - Results are engineering smoke tests, not trading evidence.
 - `SyntheticDataSource` is the only data source allowed until the Phase 4 task.
 - Phase 3 must add honesty probes before any real historical data is introduced.
+
+## ADR-003: Add Honesty Probes Before Real Data
+
+Date: 2026-06-09
+
+Decision: Phase 3 adds automated honesty probes for cost drag, future data
+absence, accounting identity, non-negative costs, no-trade position stability,
+risk rejection, and run metadata.
+
+Rationale: The project should prove it can catch low-level mistakes before any
+real historical data is introduced.
+
+Consequences:
+- `REVIEW.md` now requires honesty probes to pass.
+- `SimpleExecutionSimulator` accepts a non-negative `cost_rate` so tests can
+  prove flat-price equal-weight runs do not get rich after costs.
+- Real historical data work may begin only after these probes remain green.

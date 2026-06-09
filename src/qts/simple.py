@@ -138,6 +138,12 @@ class BasicRiskManager:
 class SimpleExecutionSimulator:
     """Fill approved orders at the provided synthetic execution snapshot price."""
 
+    cost_rate: float = 0.0
+
+    def __post_init__(self) -> None:
+        if self.cost_rate < 0.0:
+            raise ValueError("cost_rate must not be negative")
+
     def simulate(self, snapshot: DataSnapshot, orders: Sequence[Order]) -> Sequence[Fill]:
         fills: list[Fill] = []
         for order in orders:
@@ -152,7 +158,7 @@ class SimpleExecutionSimulator:
                     order=order,
                     price=price,
                     quantity=order.quantity,
-                    cost=0.0,
+                    cost=abs(price * order.quantity) * self.cost_rate,
                 )
             )
         return tuple(fills)

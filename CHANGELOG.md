@@ -2,6 +2,11 @@
 
 ## 2026-06-09
 
+- Added honesty probe tests for cost drag, future-data absence, accounting
+  identity, non-negative costs, no-trade position stability, risk rejection, and
+  run metadata.
+- Added a non-negative `cost_rate` option to the simple execution simulator so
+  cost-drag probes can run without a full cost model.
 - Added the thinnest synthetic end-to-end loop with deterministic fake prices,
   equal-weight signals, basic no-short/no-overallocation risk checks, simulated
   fills, simple accounting, backtest metrics, and a text report.
