@@ -1,0 +1,42 @@
+version: 2.1
+
+jobs:
+  qa:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-pip-{{ checksum "pyproject.toml" }}
+      - run:
+          name: Install development dependencies
+          command: |
+            python -m venv .venv
+            . .venv/bin/activate
+            python -m pip install --upgrade pip
+            python -m pip install -e ".[dev]"
+      - save_cache:
+          key: v1-pip-{{ checksum "pyproject.toml" }}
+          paths:
+            - ~/.cache/pip
+      - run:
+          name: Run tests
+          command: |
+            . .venv/bin/activate
+            pytest
+      - run:
+          name: Run lint
+          command: |
+            . .venv/bin/activate
+            ruff check
+      - run:
+          name: Run type checks
+          command: |
+            . .venv/bin/activate
+            mypy
+
+workflows:
+  qa:
+    jobs:
+      - qa
