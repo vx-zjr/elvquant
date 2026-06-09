@@ -1,0 +1,14 @@
+# Commit-safe local configuration example.
+# Secrets do not belong in this file. Put API tokens in environment variables
+# or a gitignored .env file documented by .env.example.
+
+provider = "synthetic"
+asset_ids = ["AAA", "BBB"]
+start = "2026-01-01"
+end = "2026-01-06"
+strategy = "equal_weight"
+seed = "deterministic"
+
+[parameters]
+initial_cash = "10000"
+risk_profile = "research"

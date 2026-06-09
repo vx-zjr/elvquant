@@ -1,6 +1,6 @@
-# Quant Trading Agent
+# elvquant_core
 
-A document-driven, test-first quantitative trading research system.
+A document-driven, test-first quantitative trading core.
 
 The first milestone is not profitability. The first milestone is a small,
 auditable system that avoids look-ahead bias, keeps risk controls explicit, and
@@ -8,7 +8,9 @@ can be handed to a new agent through repository documents alone.
 
 ## Current Scope
 
-The document-defined business plan is complete through Phase 12:
+The document-defined business plan is complete through Phase 12, and this
+repository now serves as the reusable core behind replaceable clients such as
+`elvquant_front`:
 
 - Python package structure under `src/qts`
 - pytest, Ruff, and mypy configuration
@@ -19,9 +21,14 @@ The document-defined business plan is complete through Phase 12:
 - rule-based momentum and deterministic ML-style research signals
 - explicit cost, risk, reporting, readiness, and local paper-trading controls
 - manual-confirmation dry-run order recording
+- commit-safe configuration loading and provider visibility checks
 
 The project still has no broker integration, no live market data feed, no stored
 secrets, and no real-money order submission path.
+
+UI clients are thin adapters. They may select configuration, call public core
+entrypoints, and display reports, but strategy, risk, data normalization, order
+generation, accounting, metrics, and secret handling must remain in this core.
 
 ## Setup
 

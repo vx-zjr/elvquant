@@ -549,3 +549,26 @@ Completion note:
 - Future work must start as a new documented task and must not enable broker
   submission without explicit new scope, tests, risk review, and secret
   management design.
+
+## Task ID: QTS-014
+
+Status: Completed
+Phase: Core split
+Title: Establish core/UI boundary and commit-safe configuration
+
+Scope:
+- Reframe the repository as `elvquant_core`.
+- Document that UI clients are thin replaceable adapters and cannot contain
+  trading business logic.
+- Add commit-safe config loading that rejects secret-like keys.
+- Add provider visibility validation at the data interface boundary.
+- Do not connect real APIs or broker clients.
+
+Acceptance criteria:
+- Core boundary documentation exists.
+- Example config loads without secrets.
+- Secret-like config keys are rejected.
+- Future-dated provider snapshots are rejected.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.

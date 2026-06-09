@@ -29,6 +29,17 @@ Windows:
 .venv\Scripts\python -m mypy
 ```
 
+## Commit-Safe Configuration
+
+Load the example config without secrets:
+
+```powershell
+.venv\Scripts\python -c "from pathlib import Path; from qts.config import load_core_config; config=load_core_config(Path('configs/local.example.toml')); print(config.as_summary())"
+```
+
+Real API tokens must not be added to TOML/YAML config files. Use environment
+variables, a gitignored `.env`, or a secret manager for secret values.
+
 ## Synthetic Demo
 
 Windows:

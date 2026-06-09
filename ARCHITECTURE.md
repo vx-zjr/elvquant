@@ -1,5 +1,16 @@
 # Architecture
 
+## Core Boundary
+
+This repository is `elvquant_core`. It owns trading-system business logic:
+provider validation, strategy execution, portfolio construction, risk checks,
+execution simulation, accounting, reporting, readiness, paper trading, and
+manual dry-run order records. UI clients are replaceable thin adapters above the
+core and must not reimplement business logic.
+
+The first UI client is planned as `elvquant_front`, a Streamlit local debugging
+console. It should call public core entrypoints and render outputs only.
+
 ## Phase 2 Boundary
 
 The repository contains scaffolding, governance documents, typed interface
@@ -9,6 +20,8 @@ limited to deterministic synthetic data and simple equal-weight research logic.
 ## Planned Modules
 
 - `DataSource`: returns data visible at a requested decision time.
+- `ValidatedDataSource`: wraps a data source and enforces point-in-time
+  visibility at the provider boundary.
 - `SignalModel`: converts a data snapshot into research signals.
 - `PortfolioConstructor`: converts signals into target positions.
 - `RiskManager`: approves or rejects targets and orders before execution.
@@ -21,6 +34,11 @@ limited to deterministic synthetic data and simple equal-weight research logic.
 
 - Strategies must not bypass `RiskManager`.
 - Strategies must not inspect future data.
+- UI clients must not contain strategy, risk, data-provider, broker, accounting,
+  metric, or secret-handling logic.
+- Configuration and secrets are separate: commit-safe run configuration can live
+  in the repository; secret values must come from environment variables,
+  gitignored `.env` files, or a secret manager.
 - Execution must not connect to a real broker until explicitly allowed by a
   later readiness task.
 - Accounting must not be modified to make a strategy look better.
@@ -29,6 +47,8 @@ limited to deterministic synthetic data and simple equal-weight research logic.
 ## Contract Location
 
 Core Protocols and dataclass payloads live in `src/qts/contracts.py`.
+Commit-safe configuration loading lives in `src/qts/config.py`. Provider
+visibility helpers live in `src/qts/providers.py`.
 
 ## Phase 2 Implementation Location
 

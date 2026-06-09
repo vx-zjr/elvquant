@@ -12,6 +12,7 @@ REQUIRED_DOCS = {
     "RUNBOOK.md",
     "EXPERIMENTS.md",
     "CHANGELOG.md",
+    "CORE_BOUNDARY.md",
 }
 
 

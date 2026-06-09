@@ -2,6 +2,8 @@
 
 ## 2026-06-09
 
+- Reframed the repository as `elvquant_core`, added core/UI boundary rules,
+  commit-safe configuration loading, and provider visibility validation.
 - Added the original quantitative trading agent development plan as a UTF-8
   normalized source document under `docs/source/`.
 - Added a manual-confirmation dry-run order workflow that enforces kill switch,

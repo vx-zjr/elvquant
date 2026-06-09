@@ -1,18 +1,20 @@
-# Project
+# elvquant_core Project
 
 ## Goal
 
-Build a modular, document-driven quantitative trading research system that can
-grow in small, audited steps. The first priority is trustworthiness: no
-look-ahead bias, explicit risk controls, reproducible results, and a project
-state that a new code agent can understand from repository documents.
+Build the modular, document-driven core of an auditable quantitative trading
+system. The first priority is trustworthiness: no look-ahead bias, explicit risk
+controls, reproducible results, and a project state that a new code agent can
+understand from repository documents.
 
 ## Current Stage
 
-The document-defined business plan is complete through Phase 12. The system can
+The document-defined business plan is complete through Phase 12. The core can
 generate traceable manual order recommendations, enforce risk and kill-switch
 controls, require human confirmation, and record dry-run order submissions
 locally. Broker integration and real-money order submission remain disabled.
+The next project stage is hardening `elvquant_core` as a reusable core under a
+replaceable thin UI such as `elvquant_front`.
 
 ## Explicit Non-Goals
 
@@ -23,6 +25,8 @@ locally. Broker integration and real-money order submission remain disabled.
 - No production strategy implementation.
 - No broker data source implementation.
 - No secrets, API keys, account identifiers, or passwords in code or docs.
+- No UI business logic. UI clients must call public core interfaces and render
+  results only.
 
 ## Strategy Disclaimer
 
@@ -37,6 +41,7 @@ checks, alter the backtest engine, or connect to live trading.
 Every agent must read these files before editing:
 
 - `docs/source/quant_trading_agent_plan.md`
+- `CORE_BOUNDARY.md`
 - `PROJECT.md`
 - `ARCHITECTURE.md`
 - `CONTRACTS.md`

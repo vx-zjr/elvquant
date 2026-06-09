@@ -228,3 +228,24 @@ Consequences:
   writing a record.
 - Kill-switch state blocks manual submit attempts.
 - Broker submission remains `"disabled"` in every manual order record.
+
+## ADR-014: Split Core From Replaceable UI Clients
+
+Date: 2026-06-09
+
+Decision: The repository is now treated as `elvquant_core`, while UI clients
+such as Streamlit live in separate repositories and call only public core
+entrypoints.
+
+Rationale: Business logic leaking into UI would reopen risk, data visibility,
+configuration, and secret-handling problems. Keeping UI as a thin client makes
+Streamlit replaceable by another frontend without changing the core.
+
+Consequences:
+- Core owns strategy, risk, provider validation, order generation, accounting,
+  metrics, and report semantics.
+- UI clients may select configs and render artifacts but must not implement
+  trading business logic.
+- Commit-safe config and secret values are handled as separate concepts.
+- Real provider work starts with one concrete provider plus existing synthetic
+  and CSV stubs, not a fleet of unused adapters.

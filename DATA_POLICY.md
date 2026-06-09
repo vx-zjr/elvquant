@@ -15,6 +15,10 @@ historical data source backed by a small fixed FRED sample.
 - Data visible at a decision time must not include future prices, future
   corporate actions, or future corrections.
 - Secrets and account data must never be stored in repository files.
+- Provider adapters must validate point-in-time visibility at the data interface
+  boundary before strategy code can consume snapshots.
+- Commit-safe configuration may name providers, assets, parameters, dates, and
+  seeds; secret values must remain outside committed configuration.
 
 ## Synthetic Data Rules
 
@@ -60,6 +64,28 @@ historical data source backed by a small fixed FRED sample.
   is absent rather than filled with future data.
 - Strategies may consume only the feature values present in the supplied
   `DataSnapshot`.
+
+## Provider Interface Enforcement
+
+Use `ValidatedDataSource` or an equivalent boundary check for every real
+provider. A provider snapshot must:
+
+- be timezone-aware
+- not be after the requested decision time
+- include a non-empty `data_version`
+- include finite positive prices for all declared assets
+- avoid exposing features for assets outside the snapshot asset universe
+
+This rule keeps look-ahead risk closed when replacing synthetic or CSV data with
+real provider data.
+
+## Configuration And Secret Separation
+
+Committed configuration belongs under `configs/` and must be safe to include in
+run reports. It may include provider names, asset IDs, strategy parameters, risk
+parameters, dates, and seeds. Secret values belong in environment variables,
+gitignored `.env` files, or a secret manager, and must not be copied into
+reports.
 
 ## Execution and Cost Assumptions
 

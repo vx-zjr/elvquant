@@ -61,3 +61,22 @@ Every Protocol docstring must mention decision time, visible data, and the ban
 on future data. A caller may only pass data that would have been visible at the
 decision time being evaluated. Implementations added in later phases must keep
 that invariant and add tests when they introduce behavior.
+
+## Provider Boundary Semantics
+
+Every real data provider must be validated at the interface boundary before
+strategy code can consume its output. `ValidatedDataSource` enforces that a
+snapshot is visible at the requested decision time, carries a non-empty
+`data_version`, and includes finite positive prices for all declared assets.
+
+Synthetic and CSV sources are stubs behind the same `DataSource` contract. Add
+one real provider only when there is a concrete need; do not create unused
+adapters in advance.
+
+## UI Boundary Semantics
+
+UI clients are not core modules. A UI may choose a commit-safe config, call a
+public core entrypoint, and render returned reports or local artifacts. It must
+not implement strategy selection logic, data normalization, risk decisions,
+order generation, broker routing, accounting, metric calculation, or secret
+loading.
