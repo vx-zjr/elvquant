@@ -271,7 +271,7 @@ Agent instructions:
 
 ## Task ID: QTS-007
 
-Status: Pending
+Status: Completed
 Phase: 7
 Title: Expand basic risk controls
 
@@ -313,3 +313,39 @@ Agent instructions:
 - Update `RISK_POLICY.md` before implementation.
 - Write failing risk tests before code changes.
 - Keep strategy behavior unchanged.
+
+## Task ID: QTS-008
+
+Status: Pending
+Phase: 8
+Title: Add structured experiment records and report files
+
+Scope:
+- Generate run IDs.
+- Record git commit, config hash, data version, random seed, and date range.
+- Save machine-readable JSON and human-readable Markdown reports.
+- Keep `EXPERIMENTS.md` as a summary linking to concrete report files.
+- Do not change strategy logic.
+- Do not make metrics look better by changing definitions.
+
+Files likely touched:
+- `src/qts/`
+- `tests/`
+- `reports/`
+- `EXPERIMENTS.md`
+- `RUNBOOK.md`
+- `CHANGELOG.md`
+- `TASKS.md`
+
+Acceptance criteria:
+- Same configuration produces a stable config hash.
+- Report files are written to disk.
+- JSON and Markdown report contents include required metadata and metrics.
+- `RUNBOOK.md` explains report generation.
+- `pytest` passes.
+- `ruff check` passes.
+- `mypy` passes.
+
+Agent instructions:
+- Write failing report-file tests before implementation.
+- Do not alter strategy logic or metrics definitions.

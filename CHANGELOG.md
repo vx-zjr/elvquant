@@ -2,6 +2,9 @@
 
 ## 2026-06-09
 
+- Expanded configurable risk controls for single-asset exposure, total exposure,
+  turnover, daily loss stops, and missing or abnormal prices.
+- Added risk rejection counts and reason metrics to backtest reports.
 - Added explicit fixed commission, proportional commission, slippage, and
   composite cost models behind a `CostModel` contract.
 - Updated execution/reporting so costs enter fills, ledger cumulative cost,

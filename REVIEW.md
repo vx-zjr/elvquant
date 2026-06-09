@@ -16,6 +16,8 @@ Before completing any task, verify:
 - Experiment results were recorded when a backtest or paper run occurred.
 - Honesty probes were run and passed before any real data, strategy, or live
   trading expansion.
+- Risk checks were run when targets, orders, or execution paths changed.
+- Reports include risk rejection counts and reasons when rejections occur.
 
 ## Phase 0 Review
 
@@ -28,3 +30,8 @@ Before completing any task, verify:
 - Honesty probes cover future-data absence, cost drag, accounting identity,
   non-negative costs, no-trade position stability, risk rejection, and run
   metadata.
+
+## Phase 7 Review
+
+- Risk rules cover short targets, single-asset exposure, total exposure, daily
+  turnover, daily loss stops, and missing or abnormal prices.

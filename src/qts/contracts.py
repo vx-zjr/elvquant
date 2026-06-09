@@ -132,6 +132,7 @@ class RiskManager(Protocol):
         snapshot: DataSnapshot,
         target: TargetPortfolio,
         orders: Sequence[Order],
+        portfolio_state: LedgerState | None = None,
     ) -> RiskDecision:
         """Evaluate only target, order, and market data visible at the decision time."""
         ...

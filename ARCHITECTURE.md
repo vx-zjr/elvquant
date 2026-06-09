@@ -85,3 +85,18 @@ Cost models live in `src/qts/costs.py`:
 stores the resulting total cost in each `Fill`. `SimpleAccountingLedger` already
 accumulates fill costs, and reports now include `total_cost` and
 `cost_to_return`.
+
+## Phase 7 Risk Location
+
+`BasicRiskManager` in `src/qts/simple.py` now supports configurable checks for:
+
+- no short target weights
+- per-asset max weight
+- total exposure
+- daily turnover
+- daily loss stop for new buys
+- missing or abnormal prices
+
+`SimpleBacktester` passes the latest ledger state into `RiskManager` and records
+rejection counts and reason counts in result metrics. `SimpleReporter` includes
+those risk metrics in text output.

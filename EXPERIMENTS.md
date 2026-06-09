@@ -78,3 +78,23 @@
   - cost_to_return: 0.095272
 - Observation: Cost-enabled return is lower than the no-cost synthetic run, as
   expected.
+
+## 2026-06-09 Strict Risk Smoke Run
+
+- Task: QTS-007
+- Command: inline Python smoke run using strict `BasicRiskManager`
+- run_id: `synthetic-20260101-20260104`
+- Risk settings:
+  - max_asset_weight: 0.2
+  - max_gross_exposure: 0.95
+  - max_daily_turnover: 0.5
+  - daily_loss_limit: 0.05
+- Metrics:
+  - net_value: 1.000000
+  - total_return: 0.000000
+  - risk_rejections: 3
+  - risk_rejection_reason_daily_turnover_exceeds_limit: 3
+  - risk_rejection_reason_single_asset_target_weight_exceeds_limit__aaa__bbb__ccc: 3
+  - risk_rejection_reason_total_exposure_exceeds_100__or_configured_limit: 3
+- Observation: Strict limits blocked all equal-weight rebalance attempts for the
+  three-asset synthetic demo, and the report exposed the reasons.

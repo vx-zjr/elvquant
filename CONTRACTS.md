@@ -22,7 +22,7 @@ data sources, or a backtest loop.
 - `DataSource.snapshot(decision_time) -> DataSnapshot`
 - `SignalModel.generate(snapshot) -> SignalSet`
 - `PortfolioConstructor.construct(snapshot, signals) -> TargetPortfolio`
-- `RiskManager.evaluate(snapshot, target, orders) -> RiskDecision`
+- `RiskManager.evaluate(snapshot, target, orders, portfolio_state=None) -> RiskDecision`
 - `Backtester.run(start, end, config) -> BacktestResult`
 - `ExecutionSimulator.simulate(snapshot, orders) -> Sequence[Fill]`
 - `CostModel.estimate(order, price) -> float`
@@ -35,6 +35,13 @@ data sources, or a backtest loop.
 visible order and execution price. Cost models must not inspect future prices,
 strategy internals, or account secrets. All estimated costs must enter `Fill.cost`
 and then `AccountingLedger.cumulative_cost`.
+
+## RiskManager Semantics
+
+`RiskManager.evaluate(...)` may receive the latest `LedgerState` as
+`portfolio_state`. Risk checks that need turnover, held positions, or daily loss
+must use only this state plus the current visible `DataSnapshot`; they must not
+query future prices or strategy internals.
 
 ## SignalModel Semantics
 

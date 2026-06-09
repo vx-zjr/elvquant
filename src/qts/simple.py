@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
+from math import isfinite
 
 from qts.contracts import (
     AccountingLedger,
@@ -106,27 +107,73 @@ class SimplePortfolioConstructor:
 class BasicRiskManager:
     """Risk manager that forbids short targets and gross exposure above 100%."""
 
+    max_asset_weight: float = 1.0
     max_gross_exposure: float = 1.0
+    max_daily_turnover: float | None = None
+    daily_loss_limit: float | None = None
 
     def evaluate(
         self,
         snapshot: DataSnapshot,
         target: TargetPortfolio,
         orders: Sequence[Order],
+        portfolio_state: LedgerState | None = None,
     ) -> RiskDecision:
         reasons: list[str] = []
         if any(weight < -_EPSILON for weight in target.weights.values()):
             reasons.append("short target weights are not allowed")
 
+        oversized_assets = [
+            asset_id
+            for asset_id, weight in target.weights.items()
+            if abs(weight) > self.max_asset_weight + _EPSILON
+        ]
+        if oversized_assets:
+            reasons.append(
+                "single asset target weight exceeds limit: "
+                f"{', '.join(sorted(oversized_assets))}"
+            )
+
         gross_exposure = sum(abs(weight) for weight in target.weights.values())
         if gross_exposure > self.max_gross_exposure + _EPSILON:
-            reasons.append("target weights exceed 100% gross exposure")
+            reasons.append("total exposure exceeds 100% or configured limit")
+
+        required_assets = set(target.weights)
+        required_assets.update(order.asset_id for order in orders)
+        if portfolio_state is not None:
+            required_assets.update(portfolio_state.positions)
 
         missing_prices = [
-            order.asset_id for order in orders if order.asset_id not in snapshot.prices
+            asset_id for asset_id in required_assets if asset_id not in snapshot.prices
         ]
         if missing_prices:
-            reasons.append(f"missing prices for orders: {', '.join(sorted(missing_prices))}")
+            reasons.append(f"missing price for: {', '.join(sorted(missing_prices))}")
+
+        abnormal_prices = [
+            asset_id
+            for asset_id in required_assets
+            if asset_id in snapshot.prices and not _is_valid_price(snapshot.prices[asset_id])
+        ]
+        if abnormal_prices:
+            reasons.append(f"abnormal price for: {', '.join(sorted(abnormal_prices))}")
+
+        if portfolio_state is not None and self.max_daily_turnover is not None:
+            turnover = _order_notional(orders, snapshot.prices) / max(
+                portfolio_state.equity,
+                _EPSILON,
+            )
+            if turnover > self.max_daily_turnover + _EPSILON:
+                reasons.append("daily turnover exceeds limit")
+
+        if portfolio_state is not None and self.daily_loss_limit is not None:
+            current_equity = portfolio_state.cash + _position_value(
+                portfolio_state.positions,
+                snapshot.prices,
+            )
+            daily_return = current_equity / max(portfolio_state.equity, _EPSILON) - 1.0
+            has_new_buy = any(order.quantity > _EPSILON for order in orders)
+            if daily_return < -self.daily_loss_limit and has_new_buy:
+                reasons.append("daily loss limit breached; new buys stopped")
 
         return RiskDecision(
             as_of=snapshot.as_of,
@@ -238,6 +285,8 @@ class SimpleBacktester:
         )
         equity_curve: list[LedgerState] = [state]
         turnover_notional = 0.0
+        risk_rejections = 0
+        risk_reason_counts: dict[str, int] = {}
 
         for decision_time in self.decision_times:
             if decision_time < start or decision_time >= end:
@@ -248,9 +297,17 @@ class SimpleBacktester:
             signals = self.signal_model.generate(decision_snapshot)
             target = self.portfolio_constructor.construct(decision_snapshot, signals)
             orders = self._orders_for_target(state, current_equity, decision_snapshot, target)
-            risk_decision = self.risk_manager.evaluate(decision_snapshot, target, orders)
+            risk_decision = self.risk_manager.evaluate(
+                decision_snapshot,
+                target,
+                orders,
+                portfolio_state=state,
+            )
 
             if not risk_decision.allowed:
+                risk_rejections += 1
+                for reason in risk_decision.reasons:
+                    risk_reason_counts[reason] = risk_reason_counts.get(reason, 0) + 1
                 equity_curve.append(
                     LedgerState(
                         as_of=decision_snapshot.as_of,
@@ -268,7 +325,13 @@ class SimpleBacktester:
             state = self.ledger.apply_fills(state, fills, execution_snapshot)
             equity_curve.append(state)
 
-        metrics = _metrics(equity_curve, self.initial_cash, turnover_notional)
+        metrics = _metrics(
+            equity_curve,
+            self.initial_cash,
+            turnover_notional,
+            risk_rejections,
+            risk_reason_counts,
+        )
         config_summary = {
             **dict(config),
             "data_source": "synthetic",
@@ -329,7 +392,14 @@ class SimpleReporter:
             f"turnover: {result.metrics['turnover']:.6f}",
             f"total_cost: {result.metrics['total_cost']:.6f}",
             f"cost_to_return: {result.metrics['cost_to_return']:.6f}",
+            f"risk_rejections: {result.metrics['risk_rejections']:.0f}",
         ]
+        risk_reason_lines = [
+            f"{key}: {value:.0f}"
+            for key, value in sorted(result.metrics.items())
+            if key.startswith("risk_rejection_reason_")
+        ]
+        lines.extend(risk_reason_lines)
         return Report(run_id=result.run_id, text="\n".join(lines), metrics=result.metrics)
 
 
@@ -373,10 +443,25 @@ def _position_value(
     return value
 
 
+def _order_notional(orders: Sequence[Order], prices: Mapping[AssetId, float]) -> float:
+    total = 0.0
+    for order in orders:
+        price = prices.get(order.asset_id)
+        if price is not None and _is_valid_price(price):
+            total += abs(order.quantity * price)
+    return total
+
+
+def _is_valid_price(price: float) -> bool:
+    return isfinite(price) and price > 0.0
+
+
 def _metrics(
     equity_curve: Sequence[LedgerState],
     initial_cash: float,
     turnover_notional: float,
+    risk_rejections: int,
+    risk_reason_counts: Mapping[str, int],
 ) -> Mapping[str, float]:
     ending_equity = equity_curve[-1].equity
     net_value = ending_equity / initial_cash
@@ -386,14 +471,22 @@ def _metrics(
     total_cost = equity_curve[-1].cumulative_cost
     profit_or_loss = ending_equity - initial_cash
     cost_to_return = total_cost / abs(profit_or_loss) if abs(profit_or_loss) > _EPSILON else 0.0
-    return {
+    metrics = {
         "net_value": net_value,
         "total_return": total_return,
         "max_drawdown": max_drawdown,
         "turnover": turnover,
         "total_cost": total_cost,
         "cost_to_return": cost_to_return,
+        "risk_rejections": float(risk_rejections),
     }
+    metrics.update(
+        {
+            f"risk_rejection_reason_{_slugify(reason)}": float(count)
+            for reason, count in risk_reason_counts.items()
+        }
+    )
+    return metrics
 
 
 def _max_drawdown(equity_values: Sequence[float]) -> float:
@@ -404,6 +497,12 @@ def _max_drawdown(equity_values: Sequence[float]) -> float:
         if peak > 0.0:
             max_drawdown = min(max_drawdown, equity / peak - 1.0)
     return max_drawdown
+
+
+def _slugify(value: str) -> str:
+    return "".join(
+        character if character.isalnum() else "_" for character in value.lower()
+    ).strip("_")
 
 
 __all__ = [

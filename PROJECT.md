@@ -9,10 +9,10 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 6 is complete once explicit fixed commission, proportional commission, and
-slippage cost assumptions feed execution fills, accounting, and reports. The next
-task is Phase 7: expand the risk layer so every target/order path has stricter
-documented risk checks.
+Phase 7 is complete once configurable risk checks cover shorts, per-asset
+weights, total exposure, turnover, daily loss stops, and abnormal prices, with
+reporting for rejection counts and reasons. The next task is Phase 8: add
+structured experiment records and report files.
 
 ## Explicit Non-Goals
 

@@ -116,3 +116,19 @@ Consequences:
 - Accounting accumulates costs without strategy involvement.
 - Reports include `total_cost` and `cost_to_return`.
 - Strategy modules remain unchanged.
+
+## ADR-007: Make Risk Rejections Reportable
+
+Date: 2026-06-09
+
+Decision: Phase 7 keeps risk checks configurable in `BasicRiskManager` and
+records rejection counts and reason counts in backtest metrics.
+
+Rationale: Risk controls are only useful if a report can explain what was
+blocked and why.
+
+Consequences:
+- `RiskManager.evaluate` accepts optional portfolio state for turnover and daily
+  loss checks.
+- `SimpleBacktester` passes current ledger state to risk evaluation.
+- `SimpleReporter` includes `risk_rejections` and reason metrics.
