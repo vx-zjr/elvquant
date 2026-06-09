@@ -9,8 +9,9 @@ state that a new code agent can understand from repository documents.
 
 ## Current Stage
 
-Phase 0 is complete once the scaffold, quality gates, and required documents are
-present. The next task is Phase 1: define core interfaces only.
+Phase 1 is complete once the core Protocol interfaces and dataclass payloads are
+defined. The next task is Phase 2: implement the thinnest end-to-end loop using
+synthetic data only.
 
 ## Explicit Non-Goals
 
@@ -18,8 +19,8 @@ present. The next task is Phase 1: define core interfaces only.
 - No live broker connection.
 - No live trading or real-money order submission.
 - No ML or AI-driven signal generation.
-- No strategy implementation.
-- No backtest engine implementation.
+- No real strategy implementation.
+- No real data source implementation.
 - No secrets, API keys, account identifiers, or passwords in code or docs.
 
 ## Required Start Protocol

@@ -1,9 +1,9 @@
 # Architecture
 
-## Phase 0 Boundary
+## Phase 1 Boundary
 
-The repository contains only scaffolding and governance documents. There are no
-runtime trading modules yet.
+The repository contains scaffolding, governance documents, and typed interface
+contracts. There are no runtime trading implementations yet.
 
 ## Planned Modules
 
@@ -24,3 +24,7 @@ runtime trading modules yet.
   later readiness task.
 - Accounting must not be modified to make a strategy look better.
 - Documentation is the source of project context, not chat history.
+
+## Contract Location
+
+Core Protocols and dataclass payloads live in `src/qts/contracts.py`.
