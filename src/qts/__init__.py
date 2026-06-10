@@ -1,7 +1,12 @@
-"""Quant trading research system package.
-
-This package is intentionally empty in Phase 0. It exposes only package metadata
-so the toolchain can prove the project scaffold imports successfully.
-"""
+"""Public package surface for the elvquant research core."""
 
 __version__ = "0.1.0"
+
+from qts.reports import StructuredReport, public_structured_workflows, run_structured_workflow
+
+__all__ = [
+    "StructuredReport",
+    "__version__",
+    "public_structured_workflows",
+    "run_structured_workflow",
+]

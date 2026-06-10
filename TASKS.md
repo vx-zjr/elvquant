@@ -605,3 +605,43 @@ Completion note:
 - Scripted Stooq downloads may return browser verification HTML in this
   environment. The downloader rejects those responses; full research should run
   once valid raw Stooq CSV files are cached or manually downloaded.
+
+## Task ID: QTS-016
+
+Status: Pending
+Phase: Audit hardening
+Title: Fix review findings in Python boundary and shared utilities
+
+Scope:
+- Use shared portfolio math in paper trading.
+- Share drawdown and ISO conversion helpers instead of duplicating them.
+- Make the in-memory API run store thread-safe.
+- Prevent accidental double charging when both legacy `cost_rate` and a
+  `CostModel` are provided.
+- Stop hardcoding readiness test status as passed in structured reports.
+
+Acceptance criteria:
+- Targeted regression tests fail before implementation and pass after.
+- `pytest`, `ruff check`, and `mypy` pass.
+- Relevant docs mention the changed behavior.
+
+## Task ID: QTS-017
+
+Status: Pending
+Phase: Rust-led core reconstruction
+Title: Establish Rust contracts, math, and API service foundation
+
+Scope:
+- Add a Rust workspace under `rust/` with typed report contracts, deterministic
+  math helpers, and a minimal service boundary.
+- Implement `/health`, `/workflows`, and synthetic-demo `/runs` behavior in the
+  Rust service using the same JSON contract as Python.
+- Keep Python as the reference implementation until parity tests prove migrated
+  behavior.
+
+Acceptance criteria:
+- Rust unit tests cover position value, target order deltas, total return, and
+  max drawdown.
+- Python tests verify the Rust contract source and document local `cargo`
+  availability.
+- No broker, live market data, or secrets are introduced.

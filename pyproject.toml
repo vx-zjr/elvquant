@@ -8,13 +8,17 @@ version = "0.1.0"
 description = "Document-driven, test-first quantitative trading core."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.32",
+]
 
 [project.optional-dependencies]
 data = [
     "kagglehub>=1.0",
 ]
 dev = [
+    "httpx2>=0.0.1",
     "mypy>=1.10",
     "pytest>=8.2",
     "ruff>=0.5",

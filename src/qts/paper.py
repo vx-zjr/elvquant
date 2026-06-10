@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -22,6 +22,7 @@ from qts.contracts import (
     SignalModel,
     TargetPortfolio,
 )
+from qts.portfolio_math import orders_for_target, position_value
 from qts.simple import (
     BasicRiskManager,
     EqualWeightSignal,
@@ -98,10 +99,16 @@ class PaperTradingEngine:
 
     def _run_day(self, decision_time: datetime) -> PaperTradingDayResult:
         snapshot = self.data_source.snapshot(decision_time)
-        current_equity = self.state.cash + _position_value(self.state.positions, snapshot)
+        current_equity = self.state.cash + position_value(self.state.positions, snapshot.prices)
         signals = self.signal_model.generate(snapshot)
         target = self.portfolio_constructor.construct(snapshot, signals)
-        orders = _orders_for_target(self.state, current_equity, snapshot, target)
+        orders = orders_for_target(
+            state=self.state,
+            equity=current_equity,
+            asset_ids=snapshot.asset_ids,
+            prices=snapshot.prices,
+            target=target,
+        )
         risk_decision = self.risk_manager.evaluate(
             snapshot,
             target,
@@ -209,39 +216,6 @@ def run_synthetic_paper_demo(output_dir: Path | None = None) -> Report:
     )
     results = engine.run_days(tuple(start + timedelta(days=offset) for offset in range(5)))
     return _build_paper_report(results, run_output_dir)
-
-
-def _orders_for_target(
-    state: LedgerState,
-    equity: float,
-    snapshot: DataSnapshot,
-    target: TargetPortfolio,
-) -> tuple[Order, ...]:
-    orders: list[Order] = []
-    asset_ids = tuple(dict.fromkeys((*snapshot.asset_ids, *state.positions.keys())))
-    for asset_id in asset_ids:
-        price = snapshot.prices[asset_id]
-        current_quantity = state.positions.get(asset_id, 0.0)
-        current_value = current_quantity * price
-        target_value = target.weights.get(asset_id, 0.0) * equity
-        quantity = (target_value - current_value) / price
-        if abs(quantity) > _EPSILON:
-            orders.append(
-                Order(
-                    as_of=snapshot.as_of,
-                    asset_id=asset_id,
-                    quantity=quantity,
-                    reason="paper_rebalance_to_target",
-                )
-            )
-    return tuple(orders)
-
-
-def _position_value(positions: Mapping[str, float], snapshot: DataSnapshot) -> float:
-    total = 0.0
-    for asset_id, quantity in positions.items():
-        total += quantity * snapshot.prices[asset_id]
-    return total
 
 
 def _build_paper_report(

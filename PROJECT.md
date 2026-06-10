@@ -16,6 +16,13 @@ locally. Broker integration and real-money order submission remain disabled.
 The next project stage is hardening `elvquant_core` as a reusable core under a
 replaceable thin UI such as `elvquant_front`.
 
+The active post-review direction is Rust-led core reconstruction. Python remains
+the reference implementation and research compatibility layer while Rust takes
+over typed report/API contracts, deterministic portfolio math, and a service
+boundary in verified slices. Do not migrate strategy, risk, accounting, data
+provider, or report semantics unless the Rust result has parity tests against
+the Python behavior.
+
 ## Explicit Non-Goals
 
 - No live market data feed.
@@ -40,6 +47,7 @@ checks, alter the backtest engine, or connect to live trading.
 
 Every agent must read these files before editing:
 
+- `../PROJECT_MEMORY.md`
 - `docs/source/quant_trading_agent_plan.md`
 - `CORE_BOUNDARY.md`
 - `PROJECT.md`
@@ -51,3 +59,11 @@ Every agent must read these files before editing:
 - `REVIEW.md`
 
 Then execute only the first `Pending` task in `TASKS.md`.
+
+## Durable Memory Rule
+
+Development context must be preserved in maintained documents, not only in model
+memory or chat history. When architecture, public interfaces, local commands,
+deployment assumptions, or known limitations change, update the relevant docs in
+the same change set. `../PROJECT_MEMORY.md` is the cross-project memory index for
+the paired core/front repositories.

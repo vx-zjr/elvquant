@@ -26,6 +26,8 @@ from qts.contracts import (
     SignalSet,
     TargetPortfolio,
 )
+from qts.metrics_math import max_drawdown
+from qts.portfolio_math import orders_for_target, position_value
 
 _EPSILON = 1e-9
 
@@ -192,6 +194,8 @@ class SimpleExecutionSimulator:
     def __post_init__(self) -> None:
         if self.cost_rate < 0.0:
             raise ValueError("cost_rate must not be negative")
+        if self.cost_rate > 0.0 and self.cost_model is not None:
+            raise ValueError("cost_rate and cost_model cannot both be configured")
 
     def simulate(self, snapshot: DataSnapshot, orders: Sequence[Order]) -> Sequence[Fill]:
         fills: list[Fill] = []
@@ -296,7 +300,13 @@ class SimpleBacktester:
             current_equity = self._mark_equity(state, decision_snapshot)
             signals = self.signal_model.generate(decision_snapshot)
             target = self.portfolio_constructor.construct(decision_snapshot, signals)
-            orders = self._orders_for_target(state, current_equity, decision_snapshot, target)
+            orders = orders_for_target(
+                state=state,
+                equity=current_equity,
+                asset_ids=decision_snapshot.asset_ids,
+                prices=decision_snapshot.prices,
+                target=target,
+            )
             risk_decision = self.risk_manager.evaluate(
                 decision_snapshot,
                 target,
@@ -345,38 +355,8 @@ class SimpleBacktester:
             metrics=metrics,
         )
 
-    def _orders_for_target(
-        self,
-        state: LedgerState,
-        equity: float,
-        snapshot: DataSnapshot,
-        target: TargetPortfolio,
-    ) -> tuple[Order, ...]:
-        orders: list[Order] = []
-        asset_ids = tuple(dict.fromkeys((*snapshot.asset_ids, *state.positions.keys())))
-
-        for asset_id in asset_ids:
-            price = snapshot.prices.get(asset_id)
-            if price is None:
-                raise ValueError(f"missing decision price for {asset_id}")
-            current_quantity = state.positions.get(asset_id, 0.0)
-            target_value = target.weights.get(asset_id, 0.0) * equity
-            current_value = current_quantity * price
-            quantity = (target_value - current_value) / price
-            if abs(quantity) > _EPSILON:
-                orders.append(
-                    Order(
-                        as_of=snapshot.as_of,
-                        asset_id=asset_id,
-                        quantity=quantity,
-                        reason="rebalance_to_target",
-                    )
-                )
-
-        return tuple(orders)
-
     def _mark_equity(self, state: LedgerState, snapshot: DataSnapshot) -> float:
-        return state.cash + _position_value(state.positions, snapshot.prices)
+        return state.cash + position_value(state.positions, snapshot.prices)
 
 
 @dataclass(frozen=True)
@@ -434,13 +414,7 @@ def _position_value(
     positions: Mapping[AssetId, float],
     prices: Mapping[AssetId, float],
 ) -> float:
-    value = 0.0
-    for asset_id, quantity in positions.items():
-        price = prices.get(asset_id)
-        if price is None:
-            raise ValueError(f"missing price for held asset {asset_id}")
-        value += quantity * price
-    return value
+    return position_value(positions, prices)
 
 
 def _order_notional(orders: Sequence[Order], prices: Mapping[AssetId, float]) -> float:
@@ -466,7 +440,7 @@ def _metrics(
     ending_equity = equity_curve[-1].equity
     net_value = ending_equity / initial_cash
     total_return = net_value - 1.0
-    max_drawdown = _max_drawdown(tuple(state.equity for state in equity_curve))
+    max_drawdown_value = _max_drawdown(tuple(state.equity for state in equity_curve))
     turnover = turnover_notional / initial_cash
     total_cost = equity_curve[-1].cumulative_cost
     profit_or_loss = ending_equity - initial_cash
@@ -474,7 +448,7 @@ def _metrics(
     metrics = {
         "net_value": net_value,
         "total_return": total_return,
-        "max_drawdown": max_drawdown,
+        "max_drawdown": max_drawdown_value,
         "turnover": turnover,
         "total_cost": total_cost,
         "cost_to_return": cost_to_return,
@@ -490,13 +464,7 @@ def _metrics(
 
 
 def _max_drawdown(equity_values: Sequence[float]) -> float:
-    peak = equity_values[0]
-    max_drawdown = 0.0
-    for equity in equity_values:
-        peak = max(peak, equity)
-        if peak > 0.0:
-            max_drawdown = min(max_drawdown, equity / peak - 1.0)
-    return max_drawdown
+    return max_drawdown(equity_values)
 
 
 def _slugify(value: str) -> str:

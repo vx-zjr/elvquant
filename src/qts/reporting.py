@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -10,6 +11,7 @@ from hashlib import sha256
 from pathlib import Path
 
 from qts.contracts import BacktestResult, LedgerState
+from qts.time_utils import to_iso
 
 
 @dataclass(frozen=True)
@@ -49,8 +51,8 @@ def write_experiment_report(
             "config_hash": config_hash,
             "data_version": result.config_summary.get("data_version", "unknown"),
             "seed": result.config_summary.get("seed", "unknown"),
-            "start": _to_iso(start),
-            "end": _to_iso(end),
+            "start": to_iso(start),
+            "end": to_iso(end),
         },
         "config_summary": dict(result.config_summary),
         "metrics": dict(result.metrics),
@@ -72,6 +74,10 @@ def write_experiment_report(
 
 def current_git_commit() -> str:
     """Return the current short git commit, or unknown outside a git checkout."""
+
+    injected = os.environ.get("ELVQUANT_GIT_COMMIT")
+    if injected:
+        return injected
 
     completed = subprocess.run(
         ["git", "rev-parse", "--short", "HEAD"],
@@ -140,15 +146,10 @@ def _markdown_report(payload: Mapping[str, object]) -> str:
     return "\n".join(lines)
 
 
-def _to_iso(value: object) -> str:
-    if hasattr(value, "isoformat"):
-        return str(value.isoformat())
-    return str(value)
-
-
 __all__ = [
     "ReportFileSet",
     "current_git_commit",
     "stable_config_hash",
+    "to_iso",
     "write_experiment_report",
 ]

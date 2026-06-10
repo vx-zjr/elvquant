@@ -29,6 +29,36 @@ Windows:
 .venv\Scripts\python -m mypy
 ```
 
+## Local Core API For Frontend Debugging
+
+Start the independent API boundary used by `elvquant_front`:
+
+```powershell
+$env:ELVQUANT_API_SERVICE_TOKEN="dev-token"
+.venv\Scripts\python -m uvicorn qts.api_app:app --reload --port 8000
+```
+
+The local frontend sends `X-Service-Token: dev-token` and
+`X-Owner-User-Id: local-debug-user` by default. Change these values only through
+environment variables, not committed source.
+
+## Rust-Led Core Service Foundation
+
+Rust source lives under `rust/`. The first service slice is intentionally small:
+typed API/report contracts, deterministic portfolio math, workflow catalog, and
+synthetic-demo compatible report JSON. Python remains the reference for trading
+logic until parity tests cover the migrated behavior.
+
+Expected command once Rust tooling is installed:
+
+```powershell
+cargo test --manifest-path rust\Cargo.toml
+cargo run --manifest-path rust\Cargo.toml -p elvquant_core_service -- --host 127.0.0.1 --port 8010
+```
+
+If `cargo` is unavailable on this machine, record that limitation in the final
+verification notes and keep Python tests as the active local gate.
+
 ## Commit-Safe Configuration
 
 Load the example config without secrets:
